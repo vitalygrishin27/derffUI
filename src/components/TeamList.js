@@ -10,20 +10,52 @@ export default class TeamList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            teams: []
+            isLoading: false,
+            isErrorLoading: false,
+            teams: [],
         };
     }
 
 //Вставить анотацию на класс контроллер @CrossOrigin(origins="http://.....")
     componentDidMount() {
-        axios.get("https://cors-anywhere.herokuapp.com/https://derff.herokuapp.com/teamNames")
+        this.setState({
+            isErrorLoading: false,
+            isLoading: true
+        });
+        this.getAllTeams();
+    }
+
+    getAllTeams() {
+        axios.get("https://derff.herokuapp.com/teamNames")
             .then(response => response.data)
             .then((data) => {
-                this.setState({teams: data});
+                this.setState({
+                    teams: data,
+                    isLoading: false,
+                    isErrorLoading: false,
+                });
+            }).catch(() => {
+                this.setState({
+                    isErrorLoading: true,
+                    isLoading:false
             });
+        });
     }
 
     render() {
+        const isLoading = this.state.isLoading;
+        const isErrorLoading = this.state.isErrorLoading;
+        let info;
+        if (isLoading) {
+            info = <tr align={"center"}>
+                <td colSpan={"5"}>Идет загрузка</td>
+            </tr>;
+        }
+        if (isErrorLoading) {
+            info = <tr align={"center"}>
+                <td colSpan={"5"}>Ошибка загрузки</td>
+            </tr>;
+        }
         return (
             <Card className={"border border-dark bg-dark text-white"}>
                 <Card.Header><FontAwesomeIcon icon={faList}/> Команды сезона</Card.Header>
@@ -39,14 +71,15 @@ export default class TeamList extends Component {
                         </tr>
                         </thead>
                         <tbody>
+                        {info}
                         {
-                            this.state.teams.length === 0 ?
+                            this.state.teams.length === 0 && !this.state.isLoading ?
                                 <tr align={"center"}>
                                     <td colSpan={"5"}>Нет зарегистрированных команд</td>
                                 </tr> :
-                                this.state.teams.map((team,count) => (
+                                this.state.teams.map((team, count) => (
                                     <tr key={team.id}>
-                                        <td>{count+1}</td>
+                                        <td>{count + 1}</td>
                                         <td>{team.teamName}</td>
                                         <td></td>
                                         <td>
@@ -56,8 +89,10 @@ export default class TeamList extends Component {
                                         </td>
                                         <td>
                                             <ButtonGroup>
-                                                <Button size={"sm"} variant={"outline-primary"}><FontAwesomeIcon icon={faEdit}/></Button>{' '}
-                                                <Button size={"sm"} variant={"outline-danger"}><FontAwesomeIcon icon={faTrash}/></Button>{' '}
+                                                <Button size={"sm"} variant={"outline-primary"}><FontAwesomeIcon
+                                                    icon={faEdit}/></Button>{' '}
+                                                <Button size={"sm"} variant={"outline-danger"}><FontAwesomeIcon
+                                                    icon={faTrash}/></Button>{' '}
                                             </ButtonGroup>
 
 
@@ -67,11 +102,11 @@ export default class TeamList extends Component {
                                 ))
                         }
 
-                            </tbody>
-                            </Table>
+                        </tbody>
+                    </Table>
 
-                            </Card.Body>
-                            </Card>
-                            );
-                            }
-                            }
+                </Card.Body>
+            </Card>
+        );
+    }
+}
