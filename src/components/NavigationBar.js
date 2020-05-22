@@ -1,15 +1,21 @@
 import React from 'react';
 import {Navbar, Nav} from 'react-bootstrap';
-
+import {Link} from "react-router-dom";
 
 class NavigationBar extends React.Component {
     render() {
         return (
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="/"><img src="../images/logo.png"></img></Navbar.Brand>
+                <Link className="navbar-brand" to={""}>
+                    <img src="../images/logo.png"/>
+                </Link>
                 <Nav className="mr-auto">
-                    <Nav.Link href="#">Add Team</Nav.Link>
-                    <Nav.Link href="#">Team List</Nav.Link>
+                    <Link className="nav-link" to={"add"}>
+                        Add Team
+                    </Link>
+                    <Link className="nav-link" to={"list"}>
+                        Team List
+                    </Link>
                 </Nav>
             </Navbar>
         );
