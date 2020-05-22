@@ -11,10 +11,10 @@ export default class NavigationBar extends Component {
                 </Link>
                 <Nav className="mr-auto">
                     <Link className="nav-link" to={"add"}>
-                        Add Team
+                        Добавить команду
                     </Link>
                     <Link className="nav-link" to={"list"}>
-                        Team List
+                        Команды
                     </Link>
                 </Nav>
             </Navbar>
