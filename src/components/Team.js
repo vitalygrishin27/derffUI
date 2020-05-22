@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import {Card, Form, Button, Col} from "react-bootstrap";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPlusCircle, faSave} from '@fortawesome/free-solid-svg-icons';
 
 export default class Team extends Component {
 
@@ -27,7 +29,7 @@ export default class Team extends Component {
     render() {
         return (
             <Card className={"border border-dark bg-dark text-white"}>
-                <Card.Header>Добавить команду</Card.Header>
+                <Card.Header><FontAwesomeIcon icon={faPlusCircle} /> Добавить команду</Card.Header>
                 <Form onSubmit={this.submitTeam} id="teamFormId">
                     <Card.Body>
                         <Form.Row>
@@ -56,7 +58,7 @@ export default class Team extends Component {
                     </Card.Body>
                     <Card.Footer style={{"textAlign": "right"}}>
                         <Button size="sm" variant="success" type="submit">
-                            Submit
+                            <FontAwesomeIcon icon={faSave} /> Submit
                         </Button>
                     </Card.Footer>
                 </Form>
