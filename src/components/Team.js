@@ -34,7 +34,7 @@ export default class Team extends Component {
         let data = new FormData();
         data.append('file', this.state.symbol);
         data.append('teamName', this.state.teamName);
-        data.append('date', (new Date(this.state.date)).toUTCString());
+        data.append('date', this.state.date ? (new Date(this.state.date)).toUTCString() : new Date(2020, 0, 1));
         data.append('boss', this.state.boss);
         data.append('phone', this.state.phone);
         data.append('village', this.state.village);
@@ -43,8 +43,8 @@ export default class Team extends Component {
         for (const pair of data.entries()) {
             console.log(pair[0] + ', ' + pair[1]);
         }
-      //  axios.post("http://localhost:8092/ui/team", data)
-        axios.post("https://derff.herokuapp.com/ui/team", data)
+        axios.post("http://localhost:8092/ui/team", data)
+      //  axios.post("https://derff.herokuapp.com/ui/team", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 this.setState({"show": true});
