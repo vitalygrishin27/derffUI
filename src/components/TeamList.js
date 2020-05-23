@@ -26,7 +26,7 @@ export default class TeamList extends Component {
     }
 
     getAllTeams() {
-        axios.get("https://derff.herokuapp.com/teamNames")
+        axios.get("https://derff.herokuapp.com/ui/teams")
             .then(response => response.data)
             .then((data) => {
                 this.setState({
@@ -65,8 +65,8 @@ export default class TeamList extends Component {
                         <tr>
                             <th>№</th>
                             <th>Название</th>
+                            <th>Населенный пункт</th>
                             <th>Руководитель</th>
-                            <th>Эмблема</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
@@ -80,13 +80,9 @@ export default class TeamList extends Component {
                                 this.state.teams.map((team, count) => (
                                     <tr key={team.id}>
                                         <td>{count + 1}</td>
-                                        <td>{team.teamName}</td>
-                                        <td></td>
-                                        <td>
-                                            <Image src={team.symbol} roundedCircle width={"25"} height={"25"}>
-
-                                            </Image>
-                                        </td>
+                                        <td><Image src={team.symbolString} roundedCircle width={"50"} height={"50"}/>{' '}{team.teamName}</td>
+                                        <td>{team.village}</td>
+                                        <td>{team.boss}</td>
                                         <td>
                                             <ButtonGroup>
                                                 <Button size={"sm"} variant={"outline-primary"}><FontAwesomeIcon
