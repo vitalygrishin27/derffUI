@@ -60,8 +60,8 @@ export default class Team extends Component {
             console.log(pair[0] + ', ' + pair[1]);
         }
         this.setState({blockScreen: true});
-        axios.post("http://localhost:8092/ui/team", data)
-            //  axios.post("https://derff.herokuapp.com/ui/team", data)
+    //    axios.post("http://localhost:8092/ui/team", data)
+              axios.post("https://derff.herokuapp.com/ui/team", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 this.setState(this.initialState);
