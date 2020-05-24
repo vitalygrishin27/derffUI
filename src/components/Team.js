@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {Card, Form, Button, Col} from "react-bootstrap";
+import {Card, Form, Button, Col, Row, Image, ButtonGroup} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPlusCircle, faSave, faUndo, faUpload} from '@fortawesome/free-solid-svg-icons';
+import {faPlusCircle, faSave, faTrash, faUndo, faUpload} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import ToastMessage from "./ToastMessage";
 
@@ -11,8 +11,11 @@ export default class Team extends Component {
         super(props);
         this.state = this.initialState;
         this.state.show = false;
+        this.state.filePreview = null;
         this.teamChange = this.teamChange.bind(this);
         this.submitTeam = this.submitTeam.bind(this);
+        this.fileChose = this.fileChose.bind(this);
+        this.resetForm = this.resetForm.bind(this);
     }
 
     initialState = {
@@ -26,6 +29,14 @@ export default class Team extends Component {
 
     resetForm = () => {
         this.setState(() => this.initialState);
+    }
+
+    resetFileInput = () => {
+        document.getElementById("fileBox").value = "";
+        this.setState({
+            filePreview: null,
+            symbol: '',
+        });
     }
 
     submitTeam = event => {
@@ -43,7 +54,7 @@ export default class Team extends Component {
         for (const pair of data.entries()) {
             console.log(pair[0] + ', ' + pair[1]);
         }
-      //  axios.post("http://localhost:8092/ui/team", data)
+        //  axios.post("http://localhost:8092/ui/team", data)
         axios.post("https://derff.herokuapp.com/ui/team", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
@@ -65,7 +76,8 @@ export default class Team extends Component {
 
     fileChose = event => {
         this.setState({
-            symbol: event.target.files[0]
+            filePreview: URL.createObjectURL(event.target.files[0]),
+            symbol: event.target.files[0],
         });
     }
 
@@ -76,6 +88,7 @@ export default class Team extends Component {
             boss,
             phone,
             village,
+            filePreview,
         } = this.state;
 
         return (
@@ -154,6 +167,7 @@ export default class Team extends Component {
                                 <Form.Group as={Col} controlId="formGridSymbol">
                                     <Form.Label>Эмблема</Form.Label>
                                     <input style={{display: "none"}}
+                                           id="fileBox"
                                            type="file"
                                            onChange={this.fileChose}
                                            ref={fileInput => this.fileInput = fileInput}/>
@@ -164,8 +178,17 @@ export default class Team extends Component {
                                             onClick={() => this.fileInput.click()}
                                     >
                                         <FontAwesomeIcon icon={faUpload}/> Выбрать
+                                    </Button> &nbsp;&nbsp;
+                                    <Image style={{"display": filePreview ? "inline-block" : "none"}}
+                                           src={this.state.filePreview} roundedCircle width={"50"}
+                                           height={"50"}/>&nbsp;&nbsp;
+                                    <Button size={"sm"}
+                                            variant={"outline-danger"}
+                                            style={{"display": filePreview ? "inline-block" : "none"}}
+                                            onClick={this.resetFileInput}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash}/>
                                     </Button>
-
                                 </Form.Group>
                             </Form.Row>
                         </Card.Body>
