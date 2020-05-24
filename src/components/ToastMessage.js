@@ -11,12 +11,15 @@ export default class ToastMessage extends Component {
             boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
         };
 
-
         return (
             <div style={this.props.children.show ? toastCss : null}>
-                <Toast className={"border border-success bg-success text-white"} show={this.props.children.show}>
-                    <Toast.Header className={"bg-success text-white"} closeButton={false}>
-                        <strong className={"mr-auto"}>Успешное сохранение</strong>
+                <Toast
+                    className={!this.props.children.error ? "border border-success bg-success text-white" : "border border-danger bg-danger text-white"}
+                    show={this.props.children.show}>
+                    <Toast.Header
+                        className={!this.props.children.error ? "bg-success text-white" : "bg-danger text-white"}
+                        closeButton={false}>
+                        <strong className={"mr-auto"}>Сообщение</strong>
                     </Toast.Header>
                     <Toast.Body>
                         {this.props.children.message}
@@ -25,5 +28,4 @@ export default class ToastMessage extends Component {
             </div>
         );
     }
-
 }

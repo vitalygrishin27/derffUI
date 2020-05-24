@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlusCircle, faSave, faTrash, faUndo, faUpload} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import ToastMessage from "./ToastMessage";
+import ScreenBlocker from "./ScreenBlocker";
 
 export default class Team extends Component {
 
@@ -11,7 +12,9 @@ export default class Team extends Component {
         super(props);
         this.state = this.initialState;
         this.state.show = false;
+        this.state.blockScreen = false;
         this.state.filePreview = null;
+        this.state.error = false;
         this.teamChange = this.teamChange.bind(this);
         this.submitTeam = this.submitTeam.bind(this);
         this.fileChose = this.fileChose.bind(this);
@@ -25,6 +28,8 @@ export default class Team extends Component {
         phone: '',
         village: '',
         symbol: '',
+        error: '',
+        blockScreen: false,
     };
 
     resetForm = () => {
@@ -54,18 +59,21 @@ export default class Team extends Component {
         for (const pair of data.entries()) {
             console.log(pair[0] + ', ' + pair[1]);
         }
-        //  axios.post("http://localhost:8092/ui/team", data)
-        axios.post("https://derff.herokuapp.com/ui/team", data)
+        this.setState({blockScreen: true});
+        axios.post("http://localhost:8092/ui/team", data)
+            //  axios.post("https://derff.herokuapp.com/ui/team", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
-                this.setState({"show": true});
+                this.setState(this.initialState);
+                this.setState({"show": true, "error": false});
                 setTimeout(() => this.setState({"show": false}), 3000);
             })
             .catch((err) => {
-                alert("AXIOS ERROR: " & err);
+                this.setState({"error": true, "show": true, "blockScreen": false});
+                setTimeout(() => this.setState({"show": false}), 3000);
                 console.log("AXIOS ERROR: ", err);
             })
-        this.setState(this.initialState);
+
     }
 
     teamChange = event => {
@@ -93,9 +101,16 @@ export default class Team extends Component {
 
         return (
             <div>
-                <div style={{"display": this.state.show ? "block" : "none"}}>
-                    <ToastMessage children={{show: this.state.show, message: "Сохранение прошло успешно!"}}/>
+                <div style={{"display": this.state.blockScreen ? "block" : "none"}}>
+                    <ScreenBlocker children={{show: this.state.blockScreen}}/>
+                </div>
 
+                <div style={{"display": this.state.show ? "block" : "none"}}>
+                    <ToastMessage children={{
+                        show: this.state.show,
+                        error: this.state.error,
+                        message: !this.state.error ? "Сохранение прошло успешно!" : "Ошибка при сохранении"
+                    }}/>
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header><FontAwesomeIcon icon={faPlusCircle}/> Добавить команду</Card.Header>
