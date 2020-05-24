@@ -62,7 +62,7 @@ export default class Team extends Component {
                 setTimeout(() => this.setState({"show": false}), 3000);
             })
             .catch((err) => {
-                alert("Error on Server");
+                alert("AXIOS ERROR: " & err);
                 console.log("AXIOS ERROR: ", err);
             })
         this.setState(this.initialState);
