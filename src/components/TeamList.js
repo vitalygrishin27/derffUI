@@ -4,6 +4,7 @@ import {Card, Table, Image, ButtonGroup, Button} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faList, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import ToastMessage from "./ToastMessage";
 
 export default class TeamList extends Component {
 
@@ -43,17 +44,21 @@ export default class TeamList extends Component {
     }
 
     deleteTeam = (teamId) => {
-        axios.delete("https://derff.herokuapp.com/ui/team" + teamId)
-        //axios.delete("http://localhost:8092/ui/team/" + teamId)
+        axios.delete("https://derff.herokuapp.com/ui/team/" + teamId)
+            //axios.delete("http://localhost:8092/ui/team/" + teamId)
             .then(response => {
                 if (response.data != null) {
                     console.log("Delete OK");
                     console.log(response.data);
+                    this.setState({"error": false, "show": true, "blockScreen": false});
+                    setTimeout(() => this.setState({"show": false}), 3000);
+                    this.setState({
+                        teams: this.state.teams.filter(team => team.id !== teamId)
+                    });
                 }
-                this.setState({
-                   teams: this.state.teams.filter(team => team.id !== teamId)
-                });
             }).catch(() => {
+            this.setState({"error": true, "show": true, "blockScreen": false});
+            setTimeout(() => this.setState({"show": false}), 3000);
             console.log("Error during deletion");
         });
     };
@@ -73,54 +78,63 @@ export default class TeamList extends Component {
             </tr>;
         }
         return (
-            <Card className={"border border-dark bg-dark text-white"}>
-                <Card.Header><FontAwesomeIcon icon={faList}/> Команды сезона</Card.Header>
-                <Card.Body>
-                    <Table striped bordered hover variant={"dark"}>
-                        <thead>
-                        <tr>
-                            <th>№</th>
-                            <th>Название</th>
-                            <th>Населенный пункт</th>
-                            <th>Руководитель</th>
-                            <th>Действия</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {info}
-                        {
-                            this.state.teams.length === 0 && !this.state.isLoading ?
-                                <tr align={"center"}>
-                                    <td colSpan={"5"}>Нет зарегистрированных команд</td>
-                                </tr> :
-                                this.state.teams.map((team, count) => (
-                                    <tr key={team.id}>
-                                        <td>{count + 1}</td>
-                                        <td><Image src={team.symbolString} roundedCircle width={"50"}
-                                                   height={"50"}/>{' '}{team.teamName}</td>
-                                        <td>{team.village}</td>
-                                        <td>{team.boss}</td>
-                                        <td>
-                                            <ButtonGroup>
-                                                <Button size={"sm"} variant={"outline-primary"}><FontAwesomeIcon
-                                                    icon={faEdit}/></Button>{' '}
-                                                <Button size={"sm"} variant={"outline-danger"}
-                                                        onClick={this.deleteTeam.bind(this, team.id)}><FontAwesomeIcon
-                                                    icon={faTrash}/></Button>{' '}
-                                            </ButtonGroup>
+            <div>
+                <div style={{"display": this.state.show ? "block" : "none"}}>
+                    <ToastMessage children={{
+                        show: this.state.show,
+                        error: this.state.error,
+                        message: !this.state.error ? "Удаление прошло успешно!" : "Ошибка при удалении"
+                    }}/>
+                </div>
+                <Card className={"border border-dark bg-dark text-white"}>
+                    <Card.Header><FontAwesomeIcon icon={faList}/> Команды сезона</Card.Header>
+                    <Card.Body>
+                        <Table striped bordered hover variant={"dark"}>
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Название</th>
+                                <th>Населенный пункт</th>
+                                <th>Руководитель</th>
+                                <th>Действия</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {info}
+                            {
+                                this.state.teams.length === 0 && !this.state.isLoading ?
+                                    <tr align={"center"}>
+                                        <td colSpan={"5"}>Нет зарегистрированных команд</td>
+                                    </tr> :
+                                    this.state.teams.map((team, count) => (
+                                        <tr key={team.id}>
+                                            <td>{count + 1}</td>
+                                            <td><Image src={team.symbolString} roundedCircle width={"50"}
+                                                       height={"50"}/>{' '}{team.teamName}</td>
+                                            <td>{team.village}</td>
+                                            <td>{team.boss}</td>
+                                            <td>
+                                                <ButtonGroup>
+                                                    <Button size={"sm"} variant={"outline-primary"}><FontAwesomeIcon
+                                                        icon={faEdit}/></Button>{' '}
+                                                    <Button size={"sm"} variant={"outline-danger"}
+                                                            onClick={this.deleteTeam.bind(this, team.id)}><FontAwesomeIcon
+                                                        icon={faTrash}/></Button>{' '}
+                                                </ButtonGroup>
 
 
-                                        </td>
+                                            </td>
 
-                                    </tr>
-                                ))
-                        }
+                                        </tr>
+                                    ))
+                            }
 
-                        </tbody>
-                    </Table>
+                            </tbody>
+                        </Table>
 
-                </Card.Body>
-            </Card>
+                    </Card.Body>
+                </Card>
+            </div>
         );
     }
 }
