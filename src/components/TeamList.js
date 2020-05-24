@@ -35,12 +35,28 @@ export default class TeamList extends Component {
                     isErrorLoading: false,
                 });
             }).catch(() => {
-                this.setState({
-                    isErrorLoading: true,
-                    isLoading:false
+            this.setState({
+                isErrorLoading: true,
+                isLoading: false
             });
         });
     }
+
+    deleteTeam = (teamId) => {
+        axios.delete("https://derff.herokuapp.com/ui/team" + teamId)
+        //axios.delete("http://localhost:8092/ui/team/" + teamId)
+            .then(response => {
+                if (response.data != null) {
+                    console.log("Delete OK");
+                    console.log(response.data);
+                }
+                this.setState({
+                   teams: this.state.teams.filter(team => team.id !== teamId)
+                });
+            }).catch(() => {
+            console.log("Error during deletion");
+        });
+    };
 
     render() {
         const isLoading = this.state.isLoading;
@@ -80,14 +96,16 @@ export default class TeamList extends Component {
                                 this.state.teams.map((team, count) => (
                                     <tr key={team.id}>
                                         <td>{count + 1}</td>
-                                        <td><Image src={team.symbolString} roundedCircle width={"50"} height={"50"}/>{' '}{team.teamName}</td>
+                                        <td><Image src={team.symbolString} roundedCircle width={"50"}
+                                                   height={"50"}/>{' '}{team.teamName}</td>
                                         <td>{team.village}</td>
                                         <td>{team.boss}</td>
                                         <td>
                                             <ButtonGroup>
                                                 <Button size={"sm"} variant={"outline-primary"}><FontAwesomeIcon
                                                     icon={faEdit}/></Button>{' '}
-                                                <Button size={"sm"} variant={"outline-danger"}><FontAwesomeIcon
+                                                <Button size={"sm"} variant={"outline-danger"}
+                                                        onClick={this.deleteTeam.bind(this, team.id)}><FontAwesomeIcon
                                                     icon={faTrash}/></Button>{' '}
                                             </ButtonGroup>
 
