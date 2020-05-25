@@ -5,6 +5,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faList, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import ToastMessage from "./ToastMessage";
+import {Link} from "react-router-dom";
 
 export default class TeamList extends Component {
 
@@ -80,11 +81,11 @@ export default class TeamList extends Component {
         return (
             <div>
                 <div style={{"display": this.state.show ? "block" : "none"}}>
-                    <ToastMessage children={{
-                        show: this.state.show,
-                        error: this.state.error,
-                        message: !this.state.error ? "Удаление прошло успешно!" : "Ошибка при удалении"
-                    }}/>
+                    <ToastMessage
+                        show={this.state.show}
+                        error={this.state.error}
+                        message={!this.state.error ? "Удаление прошло успешно!" : "Ошибка при удалении"}
+                    />
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header><FontAwesomeIcon icon={faList}/> Команды сезона</Card.Header>
@@ -115,8 +116,10 @@ export default class TeamList extends Component {
                                             <td>{team.boss}</td>
                                             <td>
                                                 <ButtonGroup>
-                                                    <Button size={"sm"} variant={"outline-primary"}><FontAwesomeIcon
-                                                        icon={faEdit}/></Button>{' '}
+                                                    <Link className="btn btn-sm btn-outline-primary"
+                                                          to={"edit/" + team.id}>{' '}
+                                                        <FontAwesomeIcon icon={faEdit}/>
+                                                    </Link>
                                                     <Button size={"sm"} variant={"outline-danger"}
                                                             onClick={this.deleteTeam.bind(this, team.id)}><FontAwesomeIcon
                                                         icon={faTrash}/></Button>{' '}

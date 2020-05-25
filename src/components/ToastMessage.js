@@ -12,17 +12,17 @@ export default class ToastMessage extends Component {
         };
 
         return (
-            <div style={this.props.children.show ? toastCss : null}>
+            <div style={this.props.show ? toastCss : null}>
                 <Toast
-                    className={!this.props.children.error ? "border border-success bg-success text-white" : "border border-danger bg-danger text-white"}
-                    show={this.props.children.show}>
+                    className={!this.props.error ? "border border-success bg-success text-white" : "border border-danger bg-danger text-white"}
+                    show={this.props.show}>
                     <Toast.Header
-                        className={!this.props.children.error ? "bg-success text-white" : "bg-danger text-white"}
+                        className={!this.props.error ? "bg-success text-white" : "bg-danger text-white"}
                         closeButton={false}>
                         <strong className={"mr-auto"}>Сообщение</strong>
                     </Toast.Header>
                     <Toast.Body>
-                        {this.props.children.message}
+                        {this.props.message}
                     </Toast.Body>
                 </Toast>
             </div>

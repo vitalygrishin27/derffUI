@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {Card, Form, Button, Col, Row, Image, ButtonGroup} from "react-bootstrap";
+import {Card, Form, Button, Col, Image} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPlusCircle, faSave, faTrash, faUndo, faUpload} from '@fortawesome/free-solid-svg-icons';
+import {faPlusCircle, faSave, faEdit, faTrash, faUndo, faList, faUpload} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import ToastMessage from "./ToastMessage";
 import ScreenBlocker from "./ScreenBlocker";
@@ -22,6 +22,7 @@ export default class Team extends Component {
     }
 
     initialState = {
+        id: '',
         teamName: '',
         date: '',
         boss: '',
@@ -32,9 +33,42 @@ export default class Team extends Component {
         blockScreen: false,
     };
 
+    componentDidMount() {
+        const teamId = +this.props.match.params.id;
+        if (teamId) {
+            this.findTeamById(teamId);
+        }
+    };
+
+    findTeamById = (teamId) => {
+        this.setState({
+            blockScreen: true
+        });
+        axios.get("https://derff.herokuapp.com/ui/team/" + teamId)
+            //  axios.get("http://localhost:8092/ui/team/" + teamId)
+            .then(response => {
+                console.log(response);
+                if (response.data != null) {
+                    this.setState({
+                        id: response.data.id,
+                        teamName: response.data.teamName,
+                        date: response.data.date ? (response.data.date).toString().substring(0, 10) : '',
+                        boss: response.data.boss,
+                        phone: response.data.phone,
+                        village: response.data.village,
+                        filePreview: response.data.symbolString,
+                        blockScreen: false,
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error("Error" + error);
+            });
+    };
+
     resetForm = () => {
         this.setState(() => this.initialState);
-    }
+    };
 
     resetFileInput = () => {
         document.getElementById("fileBox").value = "";
@@ -42,11 +76,11 @@ export default class Team extends Component {
             filePreview: null,
             symbol: '',
         });
-    }
+    };
 
     submitTeam = event => {
         event.preventDefault();
-
+        alert(this.state.date);
         let data = new FormData();
         data.append('file', this.state.symbol);
         data.append('teamName', this.state.teamName);
@@ -60,12 +94,12 @@ export default class Team extends Component {
             console.log(pair[0] + ', ' + pair[1]);
         }
         this.setState({blockScreen: true});
-    //    axios.post("http://localhost:8092/ui/team", data)
-              axios.post("https://derff.herokuapp.com/ui/team", data)
+        //    axios.post("http://localhost:8092/ui/team", data)
+        axios.post("https://derff.herokuapp.com/ui/team", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 this.setState(this.initialState);
-                this.setState({"show": true, "error": false});
+                this.setState({"show": true, "error": false, method: 'post'});
                 setTimeout(() => this.setState({"show": false}), 3000);
             })
             .catch((err) => {
@@ -74,20 +108,59 @@ export default class Team extends Component {
                 console.log("AXIOS ERROR: ", err);
             })
 
-    }
+    };
+
+    updateTeam = event => {
+        event.preventDefault();
+
+        let data = new FormData();
+        data.append('id', this.state.id);
+        data.append('file', this.state.symbol);
+        data.append('teamName', this.state.teamName);
+        data.append('date', this.state.date ? (new Date(this.state.date)).toUTCString() : new Date(2020, 0, 1));
+        data.append('boss', this.state.boss);
+        data.append('phone', this.state.phone);
+        data.append('village', this.state.village);
+
+        console.log("Send POST with: ");
+        for (const pair of data.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+        this.setState({blockScreen: true});
+        //    axios.put("http://localhost:8092/ui/team", data)
+        axios.put("https://derff.herokuapp.com/ui/team", data)
+            .then((res) => {
+                console.log("RESPONSE RECEIVED: ", res);
+                this.setState(this.initialState);
+                this.setState({"show": true, "error": false, method: 'put'});
+                setTimeout(() => this.setState({"show": false}), 3000);
+                setTimeout(() => this.teamList(), 3000);
+
+            })
+            .catch((err) => {
+                this.setState({"error": true, "show": true, "blockScreen": false});
+                setTimeout(() => this.setState({"show": false}), 3000);
+                console.log("AXIOS ERROR: ", err);
+            })
+
+    };
 
     teamChange = event => {
         this.setState({
             [event.target.name]: event.target.value
         });
-    }
+    };
+
+    teamList = () => {
+        return this.props.history.push("/list");
+    };
 
     fileChose = event => {
         this.setState({
             filePreview: URL.createObjectURL(event.target.files[0]),
             symbol: event.target.files[0],
         });
-    }
+    };
 
     render() {
         const {
@@ -102,19 +175,22 @@ export default class Team extends Component {
         return (
             <div>
                 <div style={{"display": this.state.blockScreen ? "block" : "none"}}>
-                    <ScreenBlocker children={{show: this.state.blockScreen}}/>
+                    <ScreenBlocker show={this.state.blockScreen}/>
                 </div>
 
                 <div style={{"display": this.state.show ? "block" : "none"}}>
-                    <ToastMessage children={{
-                        show: this.state.show,
-                        error: this.state.error,
-                        message: !this.state.error ? "Сохранение прошло успешно!" : "Ошибка при сохранении"
-                    }}/>
+                    <ToastMessage
+                        show={this.state.show}
+                        error={this.state.error}
+                        message={!this.state.error ? (this.state.method === "put" ? "Обновление прошло успешно!" : "Сохранение прошло успешно!") : "Ошибка при сохранении"}
+                    />
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
-                    <Card.Header><FontAwesomeIcon icon={faPlusCircle}/> Добавить команду</Card.Header>
-                    <Form onReset={this.resetForm} onSubmit={this.submitTeam} id="teamFormId">
+                    <Card.Header><FontAwesomeIcon
+                        icon={this.state.id ? faEdit : faPlusCircle}/> {this.state.id ? "Обновить данные" : "Зарегистрировать команду"}
+                    </Card.Header>
+                    <Form onReset={this.resetForm} onSubmit={this.state.id ? this.updateTeam : this.submitTeam}
+                          id="teamFormId">
                         <Card.Body>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridTeamName">
@@ -209,10 +285,13 @@ export default class Team extends Component {
                         </Card.Body>
                         <Card.Footer style={{"textAlign": "right"}}>
                             <Button size="sm" variant="success" type="submit">
-                                <FontAwesomeIcon icon={faSave}/> Сохранить
+                                <FontAwesomeIcon icon={faSave}/> {this.state.id ? "Обновить" : "Сохранить"}
                             </Button>{' '}
                             <Button size="sm" variant="info" type="reset">
                                 <FontAwesomeIcon icon={faUndo}/> Очистить
+                            </Button>{' '}
+                            <Button size="sm" variant="info" type="button" onClick={this.teamList.bind()}>
+                                <FontAwesomeIcon icon={faList}/> Список команд
                             </Button>
                         </Card.Footer>
                     </Form>

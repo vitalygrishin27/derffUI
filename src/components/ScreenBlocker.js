@@ -12,10 +12,7 @@ export default class ScreenBlocker extends Component {
         };
 
         return (
-            <div style={this.props.children.show ? screenBlockerCss : null}>
-
-            </div>
-
+            <div style={this.props.show ? screenBlockerCss : null}/>
         );
     }
 }

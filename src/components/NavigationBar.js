@@ -7,7 +7,7 @@ export default class NavigationBar extends Component {
         return (
             <Navbar bg="dark" variant="dark">
                 <Link className="navbar-brand" to={""}>
-                    <img src="../images/logo.png"/>
+                    <img alt="" src="../images/logo.png"/>
                 </Link>
                 <Nav className="mr-auto">
                     <Link className="nav-link" to={"add"}>
