@@ -10,11 +10,11 @@ export default class NavigationBar extends Component {
                     <img alt="" src="../images/logo.png"/>
                 </Link>
                 <Nav className="mr-auto">
-                    <Link className="nav-link" to={"add"}>
-                        Добавить команду
+                    <Link className="nav-link" to={"/add"}>
+                        Заявить команду на сезон
                     </Link>
-                    <Link className="nav-link" to={"list"}>
-                        Команды
+                    <Link className="nav-link" to={"/list"}>
+                        Команды сезона
                     </Link>
                 </Nav>
             </Navbar>

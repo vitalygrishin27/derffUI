@@ -12,6 +12,7 @@ export default class TeamList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentSeasonYear: null,
             isLoading: false,
             isErrorLoading: false,
             teams: [],
@@ -24,8 +25,50 @@ export default class TeamList extends Component {
             isErrorLoading: false,
             isLoading: true
         });
-        this.getAllTeams();
+        this.getCurrentSeason();
     }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.state.currentSeasonYear !== prevState.currentSeasonYear){
+            this.getAllTeamsInCurrentSeason(this.state.currentSeasonYear);
+        }
+    };
+
+    getAllTeamsInCurrentSeason(year) {
+        axios.get("https://derff.herokuapp.com/ui/teamsInSeason/"+this.state.currentSeasonYear)
+      //  axios.get("http://localhost:8092/ui/teamsInSeason/"+year)
+            .then(response => response.data)
+            .then((data) => {
+                this.setState({
+                    teams: data,
+                    isLoading: false,
+                    isErrorLoading: false,
+                });
+            }).catch(() => {
+            this.setState({
+                isErrorLoading: true,
+                isLoading: false,
+            });
+        });
+    };
+
+    getCurrentSeason() {
+        axios.get("https://derff.herokuapp.com/ui/currentSeason")
+       // axios.get("http://localhost:8092/ui/currentSeason")
+            .then(response => response.data)
+            .then((data) => {
+                this.setState({
+                    currentSeasonYear: data,
+                    isLoading: false,
+                    isErrorLoading: false,
+                });
+            }).catch(() => {
+            this.setState({
+                isErrorLoading: true,
+                isLoading: false,
+            });
+        });
+    };
 
     getAllTeams() {
         axios.get("https://derff.herokuapp.com/ui/teams")
@@ -42,11 +85,11 @@ export default class TeamList extends Component {
                 isLoading: false
             });
         });
-    }
+    };
 
     deleteTeam = (teamId) => {
         axios.delete("https://derff.herokuapp.com/ui/team/" + teamId)
-            //axios.delete("http://localhost:8092/ui/team/" + teamId)
+          //  axios.delete("http://localhost:8092/ui/team/" + teamId)
             .then(response => {
                 if (response.data != null) {
                     console.log("Delete OK");

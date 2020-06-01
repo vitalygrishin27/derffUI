@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, Form, Button, Col, Image} from "react-bootstrap";
+import {Card, Form, Button, Col, Image, DropdownButton, Dropdown} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlusCircle, faSave, faEdit, faTrash, faUndo, faList, faUpload} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -31,6 +31,7 @@ export default class Team extends Component {
         symbol: '',
         error: '',
         blockScreen: false,
+        unRegisteredTeams: [],
     };
 
     componentDidMount() {
@@ -38,6 +39,29 @@ export default class Team extends Component {
         if (teamId) {
             this.findTeamById(teamId);
         }
+        this.fillListUnRegisteredTeam();
+    };
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.id !== prevState.id && this.state.id) {
+            this.findTeamById(this.state.id);
+        }
+    };
+
+    fillListUnRegisteredTeam = () => {
+        axios.get("https://derff.herokuapp.com/ui/unRegisteredTeams")
+            // axios.get("http://localhost:8092/ui/unRegisteredTeams")
+            .then(response => {
+                console.log(response);
+                if (response.data != null) {
+                    this.setState({
+                        unRegisteredTeams: response.data,
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error("Error" + error);
+            });
     };
 
     findTeamById = (teamId) => {
@@ -57,6 +81,7 @@ export default class Team extends Component {
                         phone: response.data.phone,
                         village: response.data.village,
                         filePreview: response.data.symbolString,
+                        symbolString: response.data.symbolString,
                         blockScreen: false,
                     });
                 }
@@ -68,6 +93,7 @@ export default class Team extends Component {
 
     resetForm = () => {
         this.setState(() => this.initialState);
+        this.fillListUnRegisteredTeam();
     };
 
     resetFileInput = () => {
@@ -80,7 +106,6 @@ export default class Team extends Component {
 
     submitTeam = event => {
         event.preventDefault();
-        alert(this.state.date);
         let data = new FormData();
         data.append('file', this.state.symbol);
         data.append('teamName', this.state.teamName);
@@ -112,7 +137,6 @@ export default class Team extends Component {
 
     updateTeam = event => {
         event.preventDefault();
-
         let data = new FormData();
         data.append('id', this.state.id);
         data.append('file', this.state.symbol);
@@ -121,13 +145,14 @@ export default class Team extends Component {
         data.append('boss', this.state.boss);
         data.append('phone', this.state.phone);
         data.append('village', this.state.village);
+        data.append('symbolString', this.state.filePreview);
 
         console.log("Send POST with: ");
         for (const pair of data.entries()) {
             console.log(pair[0] + ', ' + pair[1]);
         }
         this.setState({blockScreen: true});
-        //    axios.put("http://localhost:8092/ui/team", data)
+        // axios.put("http://localhost:8092/ui/team", data)
         axios.put("https://derff.herokuapp.com/ui/team", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
@@ -188,6 +213,17 @@ export default class Team extends Component {
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header><FontAwesomeIcon
                         icon={this.state.id ? faEdit : faPlusCircle}/> {this.state.id ? "Обновить данные" : "Зарегистрировать команду"}
+                        <DropdownButton id="dropdown-basic-button" title="Не заявленные команды">
+                            {this.state.unRegisteredTeams.map((team, count) => (
+                                <Dropdown.Item>
+                                    <Button size="sm"
+                                            variant="secondary"
+                                            type="button"
+                                            onClick={() => this.setState({id: team.id})}
+                                    >{team.teamName}</Button>
+                                </Dropdown.Item>
+                            ))}
+                        </DropdownButton>
                     </Card.Header>
                     <Form onReset={this.resetForm} onSubmit={this.state.id ? this.updateTeam : this.submitTeam}
                           id="teamFormId">
@@ -285,7 +321,7 @@ export default class Team extends Component {
                         </Card.Body>
                         <Card.Footer style={{"textAlign": "right"}}>
                             <Button size="sm" variant="success" type="submit">
-                                <FontAwesomeIcon icon={faSave}/> {this.state.id ? "Обновить" : "Сохранить"}
+                                <FontAwesomeIcon icon={faSave}/> {this.state.id ? "Обновить" : "Заявить"}
                             </Button>{' '}
                             <Button size="sm" variant="info" type="reset">
                                 <FontAwesomeIcon icon={faUndo}/> Очистить
@@ -305,11 +341,11 @@ export default class Team extends Component {
 
 
 /*  const axiosConfig = {
-      headers: {
-          "Content-Type": "image/jpeg",
-          "Access-Control-Allow-Origin": "*",
-      }
-  };*/
+headers: {
+"Content-Type": "image/jpeg",
+"Access-Control-Allow-Origin": "*",
+}
+};*/
 //contentType: "image/jpeg"
 //  application/octet-stream
 //  const formData = new FormData()
