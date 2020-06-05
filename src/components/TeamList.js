@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 import {Card, Table, Image, ButtonGroup, Button} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faList, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faList, faEdit, faTrash, faAddressBook} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import ToastMessage from "./ToastMessage";
 import {Link} from "react-router-dom";
@@ -13,7 +13,8 @@ export default class TeamList extends Component {
         super(props);
         this.state = {
             currentSeasonYear: null,
-            isLoading: false,
+            isLoadingSeason: false,
+            isLoadingTeamList: false,
             isErrorLoading: false,
             teams: [],
         };
@@ -23,7 +24,6 @@ export default class TeamList extends Component {
     componentDidMount() {
         this.setState({
             isErrorLoading: false,
-            isLoading: true
         });
         this.getCurrentSeason();
     }
@@ -35,37 +35,43 @@ export default class TeamList extends Component {
     };
 
     getAllTeamsInCurrentSeason(year) {
+        this.setState({
+            isLoadingTeamList: true,
+        });
         axios.get("https://derff.herokuapp.com/ui/teamsInSeason/"+this.state.currentSeasonYear)
-      //  axios.get("http://localhost:8092/ui/teamsInSeason/"+year)
+      //  axios.get("http://localhost:8092/ui/teamsInSeason/"+this.state.currentSeasonYear)
             .then(response => response.data)
             .then((data) => {
                 this.setState({
                     teams: data,
-                    isLoading: false,
+                    isLoadingTeamList: false,
                     isErrorLoading: false,
                 });
             }).catch(() => {
             this.setState({
                 isErrorLoading: true,
-                isLoading: false,
+                isLoadingTeamList: false,
             });
         });
     };
 
     getCurrentSeason() {
+        this.setState({
+            isLoadingSeason: true,
+        });
         axios.get("https://derff.herokuapp.com/ui/currentSeason")
        // axios.get("http://localhost:8092/ui/currentSeason")
             .then(response => response.data)
             .then((data) => {
                 this.setState({
                     currentSeasonYear: data,
-                    isLoading: false,
+                    isLoadingSeason: false,
                     isErrorLoading: false,
                 });
             }).catch(() => {
             this.setState({
                 isErrorLoading: true,
-                isLoading: false,
+                isLoadingSeason: false,
             });
         });
     };
@@ -108,14 +114,15 @@ export default class TeamList extends Component {
     };
 
     render() {
-        const isLoading = this.state.isLoading;
+        const isLoadingSeason = this.state.isLoadingSeason;
+        const isLoadingTeamList = this.state.isLoadingTeamList;
         const isErrorLoading = this.state.isErrorLoading;
         let info;
-        if (isLoading) {
+      /*  if (isLoadingSeason || isLoadingTeamList) {
             info = <tr align={"center"}>
                 <td colSpan={"5"}>Идет загрузка</td>
             </tr>;
-        }
+        }*/
         if (isErrorLoading) {
             info = <tr align={"center"}>
                 <td colSpan={"5"}>Ошибка загрузки</td>
@@ -146,10 +153,14 @@ export default class TeamList extends Component {
                             <tbody>
                             {info}
                             {
-                                this.state.teams.length === 0 && !this.state.isLoading ?
+                                this.state.teams.length === 0 && !isLoadingSeason && !isLoadingTeamList ?
                                     <tr align={"center"}>
                                         <td colSpan={"5"}>Нет зарегистрированных команд</td>
                                     </tr> :
+                                    isLoadingSeason || isLoadingTeamList ?
+                                        <tr align={"center"}>
+                                            <td colSpan={"5"}>Идет загрузка</td>
+                                        </tr> :
                                     this.state.teams.map((team, count) => (
                                         <tr key={team.id}>
                                             <td>{count + 1}</td>
@@ -159,6 +170,10 @@ export default class TeamList extends Component {
                                             <td>{team.boss}</td>
                                             <td>
                                                 <ButtonGroup>
+                                                    <Link className="btn btn-sm btn-outline-primary"
+                                                          to={"/team/" + team.id + "/" + team.teamName + "/playerList"}>{' '}
+                                                        <FontAwesomeIcon icon={faAddressBook}/>
+                                                    </Link>
                                                     <Link className="btn btn-sm btn-outline-primary"
                                                           to={"edit/" + team.id}>{' '}
                                                         <FontAwesomeIcon icon={faEdit}/>

@@ -2,12 +2,14 @@ import React from 'react';
 import './App.css';
 import NavigationBar from "./components/NavigationBar";
 import {Container, Row, Col} from 'react-bootstrap';
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
 import Welcome from "./components/Welcome";
 import Footer from "./components/Footer";
 import Team from "./components/Team";
 import TeamList from "./components/TeamList";
+import PlayerList from "./components/PlayerList";
+import Player from "./components/Player";
 
 function App() {
     const marginTop = {
@@ -25,6 +27,8 @@ function App() {
                             <Route path={"/add"} exact component = {Team}/>
                             <Route path={"/edit/:id"} exact component = {Team}/>
                             <Route path={"/list"} exact component = {TeamList}/>
+                            <Route path={"/team/:id/:teamName/playerList"} exact component = {PlayerList}/>
+                            <Route path={"/team/:teamId/:teamName/players/:id"} exact component = {Player}/>
                         </Switch>
                     </Col>
                 </Row>
