@@ -377,7 +377,7 @@ export default class Player extends Component {
                                     <Form.Control
                                         className={"bg-dark text-white"}
                                         type="checkbox"
-                                        defaultChecked={this.state.isLegionary}
+                                      //  defaultChecked={this.state.isLegionary}
                                       //  value={isLegionary}
                                      //   checked={isLegionary}
                                         checked={this.state.isLegionary}

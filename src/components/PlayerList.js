@@ -130,7 +130,7 @@ export default class PlayerList extends Component{
                         message={!this.state.error ? "Удаление прошло успешно!" : "Ошибка при удалении"}
                     />
                 </div>
-                <Card className={"border border-dark bg-dark text-white"} style={{ 'width': document.body.clientWidth, 'margin-left': '-100px' }}>
+                <Card className={"border border-dark bg-dark text-white"} style={{ 'width': document.body.clientWidth, 'marginLeft': '-100px' }}>
                     <Card.Header><FontAwesomeIcon icon={faList}/> Игроки команды {this.state.teamName}
                         {'  '}<Button size="sm" variant="info" type="button" onClick={this.playerCard.bind()}>
                             <FontAwesomeIcon icon={faList}/> Заявить игрока
