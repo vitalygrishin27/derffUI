@@ -17,6 +17,7 @@ export default class Player extends Component {
         this.state.error = false;
         this.state.unRegisteredPlayers = [];
         this.playerChange = this.playerChange.bind(this);
+        this.checkBoxChange = this.checkBoxChange.bind(this);
         this.submitPlayer = this.submitPlayer.bind(this);
         this.fileChose = this.fileChose.bind(this);
         this.resetForm = this.resetForm.bind(this);
@@ -30,7 +31,7 @@ export default class Player extends Component {
         secondName: '',
         lastName: '',
         birthday: '',
-        isLegionary: '',
+        isLegionary: false,
         registration: '',
         role: '',
         photo: '',
@@ -123,7 +124,7 @@ export default class Player extends Component {
             secondName: '',
             lastName: '',
             birthday: '',
-            isLegionary: '',
+            isLegionary: false,
             registration: '',
             role: '',
             photo: '',
@@ -185,7 +186,7 @@ export default class Player extends Component {
     updatePlayer = event => {
         event.preventDefault();
         let data = new FormData();
-        //  alert(this.state.isLegionary);
+          alert(this.state.isLegionary);
         data.append('teamId', this.state.teamId);
         data.append('id', this.state.id);
         data.append('file', this.state.photo);
@@ -205,8 +206,8 @@ export default class Player extends Component {
             console.log(pair[0] + ', ' + pair[1]);
         }
         this.setState({blockScreen: true});
-        // axios.put("http://localhost:8092/ui/player", data)
-        axios.put("https://derff.herokuapp.com/ui/player", data)
+      //  axios.put("http://localhost:8092/ui/player", data)
+       axios.put("https://derff.herokuapp.com/ui/player", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 this.setState({
@@ -215,7 +216,7 @@ export default class Player extends Component {
                         secondName: '',
                         lastName: '',
                         birthday: '',
-                        isLegionary: '',
+                        isLegionary: false,
                         registration: '',
                         role: '',
                         photo: '',
@@ -255,6 +256,12 @@ export default class Player extends Component {
             photo: event.target.files[0],
         });
     };
+
+    checkBoxChange = () => {
+        this.setState({
+            isLegionary: !this.state.isLegionary,
+        });
+    }
 
     render() {
         const {
@@ -370,8 +377,11 @@ export default class Player extends Component {
                                     <Form.Control
                                         className={"bg-dark text-white"}
                                         type="checkbox"
-                                        value={isLegionary}
-                                        onChange={this.playerChange}
+                                        defaultChecked={this.state.isLegionary}
+                                      //  value={isLegionary}
+                                     //   checked={isLegionary}
+                                        checked={this.state.isLegionary}
+                                        onChange={this.checkBoxChange}
                                         autoComplete="off"
                                         name="isLegionary"
                                         placeholder="Легионер"/>
