@@ -186,7 +186,7 @@ export default class Player extends Component {
     updatePlayer = event => {
         event.preventDefault();
         let data = new FormData();
-          alert(this.state.isLegionary);
+       //   alert(this.state.isLegionary);
         data.append('teamId', this.state.teamId);
         data.append('id', this.state.id);
         data.append('file', this.state.photo);
