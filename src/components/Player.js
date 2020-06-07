@@ -171,7 +171,24 @@ export default class Player extends Component {
         axios.post("https://derff.herokuapp.com/ui/player", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
-                this.setState(this.initialState);
+               // this.setState(this.initialState);
+                this.setState({
+                        id: '',
+                        firstName: '',
+                        secondName: '',
+                        lastName: '',
+                        birthday: '',
+                        isLegionary: false,
+                        registration: '',
+                        role: '',
+                        photo: '',
+                        idCard: '',
+                        inn: '',
+                        blockScreen: false,
+                        filePreview: '',
+                        photoString: '',
+                    }
+                );
                 this.setState({"show": true, "error": false, "method": 'post'});
                 setTimeout(() => this.setState({"show": false}), 3000);
             })
