@@ -228,6 +228,9 @@ export default class Player extends Component {
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 this.setState({
+                    unRegisteredPlayers: this.state.unRegisteredPlayers.filter(player => player.id !== this.state.id)
+                });
+                this.setState({
                         id: '',
                         firstName: '',
                         secondName: '',
@@ -244,6 +247,7 @@ export default class Player extends Component {
                         photoString: '',
                     }
                 );
+
                 this.setState({"show": true, "error": false, "method": 'put'});
                 setTimeout(() => this.setState({"show": false}), 3000);
                 //  setTimeout(() => this.playerList(), 3000);
