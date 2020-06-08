@@ -12,7 +12,17 @@ export default class NavigationBar extends Component {
                 </Link>
                 <Nav className="mr-auto">
                     <Link className="nav-link" to={"/list"}>
-                        Команды сезона
+                        Команди сезону
+                    </Link>
+                </Nav>
+                <Nav className="mr-auto">
+                    <Link className="nav-link" to={"/standings"}>
+                        Турнірна таблиця
+                    </Link>
+                </Nav>
+                <Nav className="mr-auto">
+                    <Link className="nav-link" to={"/statistic"}>
+                        Статистика гравців
                     </Link>
                 </Nav>
             </Navbar>
