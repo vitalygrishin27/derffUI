@@ -314,7 +314,7 @@ export default class Player extends Component {
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header><FontAwesomeIcon
-                        icon={this.state.id ? faEdit : faPlusCircle}/> {this.state.id ? "Обновить данные" : "Зарегистрировать игрока"}
+                        icon={this.state.id ? faEdit : faPlusCircle}/> {this.state.id ? "Обновить данные игрока команды " + this.state.teamName : "Зарегистрировать игрока в команду " + this.state.teamName}
                         <DropdownButton id="dropdown-basic-button" title=
                             {this.state.loadingUnregisteredPlayer ? "Идет загрузка" : "Не заявленные игроки"}>
                             {this.state.unRegisteredPlayers.map((player, count) => (
