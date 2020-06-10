@@ -43,7 +43,7 @@ export default class Standings extends Component {
         const standings = this.state.standings;
         return (
             <div>
-                <Card className={"border border-dark bg-dark text-white"}>
+                <Card className={"text-white"} style={{ backgroundColor: 'transparent' }}>
                     <Card.Header><FontAwesomeIcon icon={faList}/> Турнірна таблиця
                     </Card.Header>
                     <Card.Body>

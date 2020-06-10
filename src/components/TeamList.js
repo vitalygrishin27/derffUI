@@ -146,7 +146,7 @@ export default class TeamList extends Component {
                         message={!this.state.error ? "Удаление прошло успешно!" : "Ошибка при удалении"}
                     />
                 </div>
-                <Card className={"border border-dark bg-dark text-white"}>
+                <Card className={"text-white"} style={{ backgroundColor: 'transparent' }} >
                     <Card.Header><FontAwesomeIcon icon={faList}/> Команды сезона</Card.Header>
                     <Card.Body>
                         <Table striped bordered hover variant={"dark"}>

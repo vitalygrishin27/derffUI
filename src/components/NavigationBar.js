@@ -1,11 +1,11 @@
 import React, {Component} from "react";
-import {Navbar, Nav} from 'react-bootstrap';
+import {Navbar, Nav, Card} from 'react-bootstrap';
 import {Link} from "react-router-dom";
 
 export default class NavigationBar extends Component {
     render() {
         return (
-            <Navbar bg="dark" variant="dark">
+            <Navbar variant="dark" className={"text-white"} style={{ backgroundColor: 'transparent' }}>
                 <Link className="navbar-brand" to={""}>
                     <img alt="" src="/images/logo.png"/>
                 </Link>

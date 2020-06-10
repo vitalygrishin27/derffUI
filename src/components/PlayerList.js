@@ -132,7 +132,7 @@ export default class PlayerList extends Component {
                         message={!this.state.error ? "Удаление прошло успешно!" : "Ошибка при удалении"}
                     />
                 </div>
-                <Card className={"border border-dark bg-dark text-white"}>
+                <Card className={"text-white"} style={{ backgroundColor: 'transparent' }}>
                     <Card.Header><FontAwesomeIcon icon={faList}/> Игроки команды {this.state.teamName}
                         {'  '}<Button size="sm" variant="info" type="button"
                                 style={{"display": this.state.isAuthenticated && (localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ? "inline" : "none"}}
