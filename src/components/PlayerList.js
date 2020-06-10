@@ -45,8 +45,8 @@ export default class PlayerList extends Component {
         this.setState({
             isLoadingPlayerList: true,
         });
-        //axios.get("https://derff.herokuapp.com/ui/seasons/" + year + "/teams/" + teamId + "/players")
-             axios.get("http://localhost:8092/ui/seasons/"+year+"/teams/"+teamId+"/players")
+        axios.get("https://derff.herokuapp.com/ui/seasons/" + year + "/teams/" + teamId + "/players")
+        //     axios.get("http://localhost:8092/ui/seasons/"+year+"/teams/"+teamId+"/players")
             .then(response => response.data)
             .then((data) => {
                 //  console.log(data);
