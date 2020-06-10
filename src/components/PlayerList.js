@@ -45,8 +45,8 @@ export default class PlayerList extends Component {
         this.setState({
             isLoadingPlayerList: true,
         });
-        axios.get("https://derff.herokuapp.com/ui/seasons/" + year + "/teams/" + teamId + "/players")
-            // axios.get("http://localhost:8092/ui/seasons/"+year+"/teams/"+teamId+"/players")
+        //axios.get("https://derff.herokuapp.com/ui/seasons/" + year + "/teams/" + teamId + "/players")
+             axios.get("http://localhost:8092/ui/seasons/"+year+"/teams/"+teamId+"/players")
             .then(response => response.data)
             .then((data) => {
                 //  console.log(data);
@@ -135,7 +135,7 @@ export default class PlayerList extends Component {
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header><FontAwesomeIcon icon={faList}/> Игроки команды {this.state.teamName}
                         {'  '}<Button size="sm" variant="info" type="button"
-                                style={{"display": localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR") ? "inline" : "none"}}
+                                style={{"display": this.state.isAuthenticated && (localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ? "inline" : "none"}}
                                 onClick={this.playerCard.bind()}>
                             <FontAwesomeIcon icon={faList}/> Заявить игрока
                         </Button>
