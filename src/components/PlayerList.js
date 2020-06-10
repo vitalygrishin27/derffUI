@@ -30,7 +30,7 @@ export default class PlayerList extends Component {
             teamId: teamId,
             teamName: teamName,
             isErrorLoading: false,
-            isAuthenticated: localStorage.getItem("user") && localStorage.getItem("responsibility") && localStorage.getItem("role"),
+            isAuthenticated: localStorage.getItem("user") && localStorage.getItem("teamIds") && localStorage.getItem("role"),
         });
         this.getCurrentSeason();
     }
@@ -135,7 +135,7 @@ export default class PlayerList extends Component {
                 <Card className={"text-white"} style={{ backgroundColor: 'transparent' }}>
                     <Card.Header><FontAwesomeIcon icon={faList}/> Игроки команды {this.state.teamName}
                         {'  '}<Button size="sm" variant="info" type="button"
-                                style={{"display": this.state.isAuthenticated && (localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ? "inline" : "none"}}
+                                style={{"display": this.state.isAuthenticated && (localStorage.getItem("teamIds").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ? "inline" : "none"}}
                                 onClick={this.playerCard.bind()}>
                             <FontAwesomeIcon icon={faList}/> Заявить игрока
                         </Button>
@@ -154,7 +154,7 @@ export default class PlayerList extends Component {
                                 <th>Голы</th>
                                 <th>Желтые карточки</th>
                                 <th>Красные карточки</th>
-                                {this.state.isAuthenticated && (localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ?
+                                {this.state.isAuthenticated && (localStorage.getItem("teamIds").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ?
                                     <th>Действия</th> : ""}
                             </tr>
                             </thead>
@@ -185,11 +185,11 @@ export default class PlayerList extends Component {
                                                 <td>{player.goalsCount}</td>
                                                 <td>{player.yellowCardCount}</td>
                                                 <td>{player.redCardCount}</td>
-                                                {this.state.isAuthenticated && (localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ?
+                                                {this.state.isAuthenticated && (localStorage.getItem("teamIds").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ?
                                                     <td>
                                                         <ButtonGroup>
                                                             <Link className="btn btn-sm btn-outline-warning"
-                                                                  style={{"display": this.state.isAuthenticated && (localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ? "block" : "none"}}
+                                                                  style={{"display": this.state.isAuthenticated && (localStorage.getItem("teamIds").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ? "block" : "none"}}
                                                                   to={"/team/" + this.state.teamId + "/" + this.state.teamName + "/players/" + player.id}>{' '}
                                                                 <FontAwesomeIcon icon={faAddressBook}/>
                                                             </Link>{' '}

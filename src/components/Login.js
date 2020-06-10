@@ -45,7 +45,7 @@ export default class Login extends Component {
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 localStorage.setItem("user", res.data.userName);
-                localStorage.setItem("responsіbility", res.data.teamsIds);
+                localStorage.setItem("teamIds", res.data.teamsIds);
                 localStorage.setItem("role", res.data.role);
                // this.setState({"error": false, "user": res.data, "isAuthenticated": true});
                 this.props.history.goBack();

@@ -13,7 +13,7 @@ export default class TeamList extends Component {
         super(props);
         this.state = {
             userName: '',
-            responsibility: '',
+            teamIds: '',
             role: '',
             isAuthenticated: false,
             currentSeasonYear: null,
@@ -28,12 +28,12 @@ export default class TeamList extends Component {
     componentDidMount() {
         this.setState({
             userName: localStorage.getItem("user"),
-            responsibility: localStorage.getItem("responsibility"),
+            teamIds: localStorage.getItem("teamIds"),
             role: localStorage.getItem("role"),
-            isAuthenticated: localStorage.getItem("user") && localStorage.getItem("responsibility") && localStorage.getItem("role"),
+            isAuthenticated: localStorage.getItem("user") && localStorage.getItem("teamIds") && localStorage.getItem("role"),
             isErrorLoading: false,
         });
-      //  alert(localStorage.getItem("responsibility").match("32"));
+      //  alert(localStorage.getItem("teamIds").match("32"));
         this.getCurrentSeason();
     }
 
@@ -41,6 +41,7 @@ export default class TeamList extends Component {
         if (this.state.currentSeasonYear !== prevState.currentSeasonYear) {
             this.getAllTeamsInCurrentSeason(this.state.currentSeasonYear);
         }
+        alert(localStorage.getItem("teamIds"));
     };
 
     getAllTeamsInCurrentSeason(year) {
@@ -184,7 +185,7 @@ export default class TeamList extends Component {
                                                             <FontAwesomeIcon icon={faAddressBook}/>
                                                         </Link>
                                                         <Link className="btn btn-sm btn-outline-warning"
-                                                              style={{"display": this.state.isAuthenticated && (this.state.responsibility.match(team.id) || this.state.role.match("ADMINISTRATOR"))  ? "block" : "none"}}
+                                                              style={{"display": this.state.isAuthenticated && (this.state.teamIds.match(team.id) || this.state.role.match("ADMINISTRATOR"))  ? "block" : "none"}}
                                                               to={"edit/" + team.id}>{' '}
                                                             <FontAwesomeIcon icon={faEdit}/>
                                                         </Link>

@@ -42,7 +42,7 @@ export default class Team extends Component {
         }
         this.fillListUnRegisteredTeam();
         this.setState({
-            isAuthenticated: localStorage.getItem("user") && localStorage.getItem("responsibility") && localStorage.getItem("role"),
+            isAuthenticated: localStorage.getItem("user") && localStorage.getItem("teamIds") && localStorage.getItem("role"),
         });
 
     };
