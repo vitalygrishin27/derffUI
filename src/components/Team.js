@@ -113,6 +113,7 @@ export default class Team extends Component {
         data.append('boss', this.state.boss);
         data.append('phone', this.state.phone);
         data.append('village', this.state.village);
+        data.append('userName', localStorage.getItem("user"));
 
         console.log("Send POST with: ");
         for (const pair of data.entries()) {
@@ -146,6 +147,7 @@ export default class Team extends Component {
         data.append('phone', this.state.phone);
         data.append('village', this.state.village);
         data.append('symbolString', this.state.filePreview);
+        data.append('userName', localStorage.getItem("user"));
 
         console.log("Send POST with: ");
         for (const pair of data.entries()) {

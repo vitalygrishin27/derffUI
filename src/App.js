@@ -12,6 +12,7 @@ import PlayerList from "./components/PlayerList";
 import Player from "./components/Player";
 import Standings from "./components/Standings";
 import Statistic from "./components/Statistic";
+import Login from "./components/Login";
 
 function App() {
     const marginTop = {
@@ -26,6 +27,7 @@ function App() {
                     <Col lg={12} style={marginTop}>
                         <Switch>
                             <Route path={"/"} exact component = {Welcome}/>
+                            <Route path={"/login"} exact component = {Login}/>
                             <Route path={"/add"} exact component = {Team}/>
                             <Route path={"/edit/:id"} exact component = {Team}/>
                             <Route path={"/list"} exact component = {TeamList}/>

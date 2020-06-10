@@ -25,11 +25,12 @@ export default class TeamList extends Component {
         this.setState({
             isErrorLoading: false,
         });
+      //  alert(localStorage.getItem("responsіbility").match("32"));
         this.getCurrentSeason();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.state.currentSeasonYear !== prevState.currentSeasonYear){
+        if (this.state.currentSeasonYear !== prevState.currentSeasonYear) {
             this.getAllTeamsInCurrentSeason(this.state.currentSeasonYear);
         }
     };
@@ -38,8 +39,8 @@ export default class TeamList extends Component {
         this.setState({
             isLoadingTeamList: true,
         });
-        axios.get("https://derff.herokuapp.com/ui/teamsInSeason/"+this.state.currentSeasonYear)
-      //  axios.get("http://localhost:8092/ui/teamsInSeason/"+this.state.currentSeasonYear)
+        axios.get("https://derff.herokuapp.com/ui/teamsInSeason/" + this.state.currentSeasonYear)
+            //  axios.get("http://localhost:8092/ui/teamsInSeason/"+this.state.currentSeasonYear)
             .then(response => response.data)
             .then((data) => {
                 this.setState({
@@ -60,7 +61,7 @@ export default class TeamList extends Component {
             isLoadingSeason: true,
         });
         axios.get("https://derff.herokuapp.com/ui/currentSeason")
-       // axios.get("http://localhost:8092/ui/currentSeason")
+            // axios.get("http://localhost:8092/ui/currentSeason")
             .then(response => response.data)
             .then((data) => {
                 this.setState({
@@ -95,7 +96,7 @@ export default class TeamList extends Component {
 
     deleteTeam = (teamId) => {
         axios.delete("https://derff.herokuapp.com/ui/team/" + teamId)
-          //  axios.delete("http://localhost:8092/ui/team/" + teamId)
+            //  axios.delete("http://localhost:8092/ui/team/" + teamId)
             .then(response => {
                 if (response.data != null) {
                     console.log("Delete OK");
@@ -118,11 +119,11 @@ export default class TeamList extends Component {
         const isLoadingTeamList = this.state.isLoadingTeamList;
         const isErrorLoading = this.state.isErrorLoading;
         let info;
-      /*  if (isLoadingSeason || isLoadingTeamList) {
-            info = <tr align={"center"}>
-                <td colSpan={"5"}>Идет загрузка</td>
-            </tr>;
-        }*/
+        /*  if (isLoadingSeason || isLoadingTeamList) {
+              info = <tr align={"center"}>
+                  <td colSpan={"5"}>Идет загрузка</td>
+              </tr>;
+          }*/
         if (isErrorLoading) {
             info = <tr align={"center"}>
                 <td colSpan={"5"}>Ошибка загрузки</td>
@@ -161,33 +162,35 @@ export default class TeamList extends Component {
                                         <tr align={"center"}>
                                             <td colSpan={"5"}>Идет загрузка</td>
                                         </tr> :
-                                    this.state.teams.map((team, count) => (
-                                        <tr key={team.id}>
-                                            <td>{count + 1}</td>
-                                            <td><Image src={team.symbolString} roundedCircle width={"50"}
-                                                       height={"50"}/>{' '}{team.teamName}</td>
-                                            <td>{team.village}</td>
-                                            <td>{team.boss}</td>
-                                            <td>
-                                                <ButtonGroup>
-                                                    <Link className="btn btn-sm btn-outline-primary"
-                                                          to={"/team/" + team.id + "/" + team.teamName + "/playerList"}>{' '}
-                                                        <FontAwesomeIcon icon={faAddressBook}/>
-                                                    </Link>
-                                                    <Link className="btn btn-sm btn-outline-primary"
-                                                          to={"edit/" + team.id}>{' '}
-                                                        <FontAwesomeIcon icon={faEdit}/>
-                                                    </Link>
-                                                    <Button size={"sm"} variant={"outline-danger"}
-                                                            onClick={this.deleteTeam.bind(this, team.id)}><FontAwesomeIcon
-                                                        icon={faTrash}/></Button>{' '}
-                                                </ButtonGroup>
+                                        this.state.teams.map((team, count) => (
+                                            <tr key={team.id}>
+                                                <td>{count + 1}</td>
+                                                <td><Image src={team.symbolString} roundedCircle width={"50"}
+                                                           height={"50"}/>{' '}{team.teamName}</td>
+                                                <td>{team.village}</td>
+                                                <td>{team.boss}</td>
+                                                <td>
+                                                    <ButtonGroup>
+                                                        <Link className="btn btn-sm btn-outline-primary"
+                                                              to={"/team/" + team.id + "/" + team.teamName + "/playerList"}>{' '}
+                                                            <FontAwesomeIcon icon={faAddressBook}/>
+                                                        </Link>
+                                                        <Link className="btn btn-sm btn-outline-warning"
+                                                              style={{"display": localStorage.getItem("responsіbility").match(team.id) || localStorage.getItem("role").match("ADMINISTRATOR")  ? "block" : "none"}}
+                                                              to={"edit/" + team.id}>{' '}
+                                                            <FontAwesomeIcon icon={faEdit}/>
+                                                        </Link>
+                                                        <Button size={"sm"} variant={"outline-danger"}
+                                                                style={{"display": localStorage.getItem("role").match("ADMINISTRATOR") ? "block" : "none"}}
+                                                                onClick={this.deleteTeam.bind(this, team.id)}><FontAwesomeIcon
+                                                            icon={faTrash}/></Button>{' '}
+                                                    </ButtonGroup>
 
 
-                                            </td>
+                                                </td>
 
-                                        </tr>
-                                    ))
+                                            </tr>
+                                        ))
                             }
 
                             </tbody>

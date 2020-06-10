@@ -161,6 +161,7 @@ export default class Player extends Component {
         data.append('role', this.state.role);
         data.append('idCard', this.state.idCard);
         data.append('inn', this.state.inn);
+        data.append('userName', localStorage.getItem("user"));
 
         console.log("Send POST with: ");
         for (const pair of data.entries()) {
@@ -217,6 +218,7 @@ export default class Player extends Component {
         data.append('role', this.state.role);
         data.append('idCard', this.state.idCard);
         data.append('inn', this.state.inn);
+        data.append('userName', localStorage.getItem("user"));
 
         console.log("Send POST with: ");
         for (const pair of data.entries()) {

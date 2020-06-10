@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAddressBook, faEdit, faList, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 
-export default class PlayerList extends Component{
+export default class PlayerList extends Component {
 
     constructor(props) {
         super(props);
@@ -34,7 +34,7 @@ export default class PlayerList extends Component{
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.state.currentSeasonYear !== prevState.currentSeasonYear){
+        if (this.state.currentSeasonYear !== prevState.currentSeasonYear) {
             this.getAllPlayersForTeamInCurrentSeason(this.state.teamId, this.state.currentSeasonYear);
         }
     };
@@ -43,11 +43,11 @@ export default class PlayerList extends Component{
         this.setState({
             isLoadingPlayerList: true,
         });
-        axios.get("https://derff.herokuapp.com/ui/seasons/"+year+"/teams/"+teamId+"/players")
-       // axios.get("http://localhost:8092/ui/seasons/"+year+"/teams/"+teamId+"/players")
+        axios.get("https://derff.herokuapp.com/ui/seasons/" + year + "/teams/" + teamId + "/players")
+            // axios.get("http://localhost:8092/ui/seasons/"+year+"/teams/"+teamId+"/players")
             .then(response => response.data)
             .then((data) => {
-              //  console.log(data);
+                //  console.log(data);
                 this.setState({
                     players: data,
                     isLoadingPlayerList: false,
@@ -84,7 +84,7 @@ export default class PlayerList extends Component{
 
     deletePlayer = (playerId) => {
         axios.delete("https://derff.herokuapp.com/ui/players/" + playerId)
-       // axios.delete("http://localhost:8092/ui/players/" + playerId)
+            // axios.delete("http://localhost:8092/ui/players/" + playerId)
             .then(response => {
                 if (response.data != null) {
                     console.log("Delete OK");
@@ -111,11 +111,11 @@ export default class PlayerList extends Component{
         const isLoadingPlayerList = this.state.isLoadingPlayerList;
         const isErrorLoading = this.state.isErrorLoading;
         let info;
-       /* if (isLoadingSeason || isLoadingPlayerList) {
-            info = <tr align={"center"}>
-                <td colSpan={"5"}>Идет загрузка</td>
-            </tr>;
-        }*/
+        /* if (isLoadingSeason || isLoadingPlayerList) {
+             info = <tr align={"center"}>
+                 <td colSpan={"5"}>Идет загрузка</td>
+             </tr>;
+         }*/
         if (isErrorLoading) {
             info = <tr align={"center"}>
                 <td colSpan={"11"}>Ошибка загрузки</td>
@@ -132,12 +132,14 @@ export default class PlayerList extends Component{
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header><FontAwesomeIcon icon={faList}/> Игроки команды {this.state.teamName}
-                        {'  '}<Button size="sm" variant="info" type="button" onClick={this.playerCard.bind()}>
+                        {'  '}<Button size="sm" variant="info" type="button"
+                                style={{"display": localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR") ? "inline" : "none"}}
+                                onClick={this.playerCard.bind()}>
                             <FontAwesomeIcon icon={faList}/> Заявить игрока
                         </Button>
                     </Card.Header>
                     <Card.Body>
-                        <Table striped bordered hover variant={"dark"} style={{"width":"50%", 'display': 'table'}}>
+                        <Table striped bordered hover variant={"dark"} style={{"width": "50%", 'display': 'table'}}>
                             <thead>
                             <tr>
                                 <th>№</th>
@@ -150,7 +152,8 @@ export default class PlayerList extends Component{
                                 <th>Голы</th>
                                 <th>Желтые карточки</th>
                                 <th>Красные карточки</th>
-                                <th>Действия</th>
+                                {localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR") ?
+                                    <th>Действия</th> : ""}
                             </tr>
                             </thead>
                             <tbody>
@@ -164,34 +167,39 @@ export default class PlayerList extends Component{
                                         <tr align={"center"}>
                                             <td colSpan={"11"}>Идет загрузка</td>
                                         </tr> :
-                                    this.state.players.map((player, count) => (
-                                        <tr key={player.id}>
-                                            <td>{count + 1}</td>
-                                            <td><Image src={player.photoString} rounded width={"50"} height={"71"}/></td>
-                                            <td>
-                                            {player.lastName}
-                                            {' '}{player.firstName}
-                                            {' '}{player.secondName}</td>
-                                            <td>{player.birthday ? player.birthday.toString().substring(0, 10) : ''}</td>
-                                            <td>{player.role}</td>
-                                            <td>{player.registration}</td>
-                                            <td>{player.isLegionary ? "Да" : "Нет"}</td>
-                                            <td>{player.goalsCount}</td>
-                                            <td>{player.yellowCardCount}</td>
-                                            <td>{player.redCardCount}</td>
-                                            <td>
-                                            <ButtonGroup>
-                                                <Link className="btn btn-sm btn-outline-primary"
-                                                      to={"/team/" + this.state.teamId + "/" + this.state.teamName + "/players/" + player.id}>{' '}
-                                                    <FontAwesomeIcon icon={faAddressBook}/>
-                                                </Link>{' '}
-                                                <Button size={"sm"} variant={"outline-danger"}
-                                                        onClick={this.deletePlayer.bind(this, player.id)}><FontAwesomeIcon
-                                                    icon={faTrash}/></Button>{' '}
-                                            </ButtonGroup>
-                                            </td>
-                                        </tr>
-                                    ))
+                                        this.state.players.map((player, count) => (
+                                            <tr key={player.id}>
+                                                <td>{count + 1}</td>
+                                                <td><Image src={player.photoString} rounded width={"50"} height={"71"}/>
+                                                </td>
+                                                <td>
+                                                    {player.lastName}
+                                                    {' '}{player.firstName}
+                                                    {' '}{player.secondName}</td>
+                                                <td>{player.birthday ? player.birthday.toString().substring(0, 10) : ''}</td>
+                                                <td>{player.role}</td>
+                                                <td>{player.registration}</td>
+                                                <td>{player.isLegionary ? "Да" : "Нет"}</td>
+                                                <td>{player.goalsCount}</td>
+                                                <td>{player.yellowCardCount}</td>
+                                                <td>{player.redCardCount}</td>
+                                                {localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR") ?
+                                                    <td>
+                                                        <ButtonGroup>
+                                                            <Link className="btn btn-sm btn-outline-warning"
+                                                                  style={{"display": localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR") ? "block" : "none"}}
+                                                                  to={"/team/" + this.state.teamId + "/" + this.state.teamName + "/players/" + player.id}>{' '}
+                                                                <FontAwesomeIcon icon={faAddressBook}/>
+                                                            </Link>{' '}
+                                                            <Button size={"sm"} variant={"outline-danger"}
+                                                                    style={{"display": localStorage.getItem("role").match("ADMINISTRATOR") ? "block" : "none"}}
+                                                                    onClick={this.deletePlayer.bind(this, player.id)}><FontAwesomeIcon
+                                                                icon={faTrash}/></Button>{' '}
+                                                        </ButtonGroup>
+                                                    </td>
+                                                    : ""}
+                                            </tr>
+                                        ))
                             }
 
                             </tbody>

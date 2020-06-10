@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Navbar, Nav} from 'react-bootstrap';
 import {Link} from "react-router-dom";
-//import {Container} from 'react-bootstrap';
 
 export default class NavigationBar extends Component {
     render() {
@@ -23,6 +22,11 @@ export default class NavigationBar extends Component {
                 <Nav className="mr-auto">
                     <Link className="nav-link" to={"/statistic"}>
                         Статистика гравців
+                    </Link>
+                </Nav>
+                <Nav className="mr-auto">
+                    <Link className="nav-link" to={"/login"}>
+                        Увійти до системи
                     </Link>
                 </Nav>
             </Navbar>
