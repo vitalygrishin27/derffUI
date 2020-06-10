@@ -41,7 +41,7 @@ export default class TeamList extends Component {
         if (this.state.currentSeasonYear !== prevState.currentSeasonYear) {
             this.getAllTeamsInCurrentSeason(this.state.currentSeasonYear);
         }
-        alert(localStorage.getItem("teamIds"));
+      //  alert(localStorage.getItem("teamIds"));
     };
 
     getAllTeamsInCurrentSeason(year) {
