@@ -13,6 +13,7 @@ export default class PlayerList extends Component {
         this.state = {
             teamId: null,
             teamName: null,
+            isAuthenticated: false,
             currentSeasonYear: null,
             isLoadingPlayerList: false,
             isLoadingSeason: false,
@@ -29,6 +30,7 @@ export default class PlayerList extends Component {
             teamId: teamId,
             teamName: teamName,
             isErrorLoading: false,
+            isAuthenticated: localStorage.getItem("user") && localStorage.getItem("responsibility") && localStorage.getItem("role"),
         });
         this.getCurrentSeason();
     }
@@ -183,16 +185,16 @@ export default class PlayerList extends Component {
                                                 <td>{player.goalsCount}</td>
                                                 <td>{player.yellowCardCount}</td>
                                                 <td>{player.redCardCount}</td>
-                                                {localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR") ?
+                                                {this.state.isAuthenticated && (localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ?
                                                     <td>
                                                         <ButtonGroup>
                                                             <Link className="btn btn-sm btn-outline-warning"
-                                                                  style={{"display": localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR") ? "block" : "none"}}
+                                                                  style={{"display": this.state.isAuthenticated && (localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ? "block" : "none"}}
                                                                   to={"/team/" + this.state.teamId + "/" + this.state.teamName + "/players/" + player.id}>{' '}
                                                                 <FontAwesomeIcon icon={faAddressBook}/>
                                                             </Link>{' '}
                                                             <Button size={"sm"} variant={"outline-danger"}
-                                                                    style={{"display": localStorage.getItem("role").match("ADMINISTRATOR") ? "block" : "none"}}
+                                                                    style={{"display": this.state.isAuthenticated && localStorage.getItem("role").match("ADMINISTRATOR") ? "block" : "none"}}
                                                                     onClick={this.deletePlayer.bind(this, player.id)}><FontAwesomeIcon
                                                                 icon={faTrash}/></Button>{' '}
                                                         </ButtonGroup>

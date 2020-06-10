@@ -15,6 +15,7 @@ export default class Team extends Component {
         this.state.blockScreen = false;
         this.state.filePreview = null;
         this.state.error = false;
+        this.state.isAuthenticated = false;
         this.teamChange = this.teamChange.bind(this);
         this.submitTeam = this.submitTeam.bind(this);
         this.fileChose = this.fileChose.bind(this);
@@ -40,6 +41,10 @@ export default class Team extends Component {
             this.findTeamById(teamId);
         }
         this.fillListUnRegisteredTeam();
+        this.setState({
+            isAuthenticated: localStorage.getItem("user") && localStorage.getItem("responsibility") && localStorage.getItem("role"),
+        });
+
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {

@@ -12,6 +12,10 @@ export default class TeamList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userName: '',
+            responsibility: '',
+            role: '',
+            isAuthenticated: false,
             currentSeasonYear: null,
             isLoadingSeason: false,
             isLoadingTeamList: false,
@@ -23,9 +27,13 @@ export default class TeamList extends Component {
 //Вставить анотацию на класс контроллер @CrossOrigin(origins="http://.....")
     componentDidMount() {
         this.setState({
+            userName: localStorage.getItem("user"),
+            responsibility: localStorage.getItem("responsibility"),
+            role: localStorage.getItem("role"),
+            isAuthenticated: localStorage.getItem("user") && localStorage.getItem("responsibility") && localStorage.getItem("role"),
             isErrorLoading: false,
         });
-      //  alert(localStorage.getItem("responsіbility").match("32"));
+      //  alert(localStorage.getItem("responsibility").match("32"));
         this.getCurrentSeason();
     }
 
@@ -176,12 +184,12 @@ export default class TeamList extends Component {
                                                             <FontAwesomeIcon icon={faAddressBook}/>
                                                         </Link>
                                                         <Link className="btn btn-sm btn-outline-warning"
-                                                              style={{"display": localStorage.getItem("responsіbility").match(team.id) || localStorage.getItem("role").match("ADMINISTRATOR")  ? "block" : "none"}}
+                                                              style={{"display": this.state.isAuthenticated && (this.state.responsibility.match(team.id) || this.state.role.match("ADMINISTRATOR"))  ? "block" : "none"}}
                                                               to={"edit/" + team.id}>{' '}
                                                             <FontAwesomeIcon icon={faEdit}/>
                                                         </Link>
                                                         <Button size={"sm"} variant={"outline-danger"}
-                                                                style={{"display": localStorage.getItem("role").match("ADMINISTRATOR") ? "block" : "none"}}
+                                                                style={{"display": this.state.isAuthenticated && this.state.role.match("ADMINISTRATOR") ? "block" : "none"}}
                                                                 onClick={this.deleteTeam.bind(this, team.id)}><FontAwesomeIcon
                                                             icon={faTrash}/></Button>{' '}
                                                     </ButtonGroup>

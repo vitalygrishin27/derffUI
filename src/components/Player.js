@@ -16,6 +16,7 @@ export default class Player extends Component {
         this.state.filePreview = null;
         this.state.error = false;
         this.state.unRegisteredPlayers = [];
+        this.state.isAuthenticated = false;
         this.playerChange = this.playerChange.bind(this);
         this.checkBoxChange = this.checkBoxChange.bind(this);
         this.submitPlayer = this.submitPlayer.bind(this);
