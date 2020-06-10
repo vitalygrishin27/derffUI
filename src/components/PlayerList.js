@@ -154,7 +154,7 @@ export default class PlayerList extends Component {
                                 <th>Голы</th>
                                 <th>Желтые карточки</th>
                                 <th>Красные карточки</th>
-                                {localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR") ?
+                                {this.state.isAuthenticated && (localStorage.getItem("responsіbility").match(this.state.teamId) || localStorage.getItem("role").match("ADMINISTRATOR")) ?
                                     <th>Действия</th> : ""}
                             </tr>
                             </thead>
