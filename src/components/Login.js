@@ -40,8 +40,8 @@ export default class Login extends Component {
         data.append('login', this.state.login);
         data.append('pass', this.state.pass);
         this.setState({blockScreen: true});
-        //    axios.post("http://localhost:8092/ui/users/authenticate", data)
-        axios.post("https://derff.herokuapp.com/ui/users/authenticate", data)
+           axios.post("http://localhost:8092/ui/users/authenticate", data)
+        //axios.post("https://derff.herokuapp.com/ui/users/authenticate", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 localStorage.setItem("user", res.data.userName);
