@@ -19,13 +19,14 @@ export default class Standings extends Component {
         //yellowCards
         //skipGames
         //bombardiers
-        // this.getStatisticFromBackEnd("yellowCards");
+        this.getStatisticFromBackEnd("bombardiers");
     }
 
     getStatisticFromBackEnd = (command) => {
         console.log(command);
         this.setState({
             isLoading: true,
+            isErrorLoading: false,
         });
         axios.get("https://derff.herokuapp.com/ui/statistic/" + command)
         // axios.get("http://localhost:8092/ui/statistic/" + command)
