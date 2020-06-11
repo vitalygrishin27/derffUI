@@ -68,7 +68,7 @@ export default class Player extends Component {
             loadingUnregisteredPlayer: true,
         });
 
-        axios.get("https://derff.herokuapp.com/ui/unRegisteredPlayers")
+        axios.get(localStorage.getItem("host")+"unRegisteredPlayers")
         //axios.get("http://localhost:8092/ui/unRegisteredPlayers")
             .then(response => {
                 console.log(response);
@@ -91,7 +91,7 @@ export default class Player extends Component {
         this.setState({
             blockScreen: true
         });
-        axios.get("https://derff.herokuapp.com/ui/players/" + playerId)
+        axios.get(localStorage.getItem("host")+"players/" + playerId)
         // axios.get("http://localhost:8092/ui/players/" + playerId)
             .then(response => {
                 console.log(response);
@@ -170,7 +170,7 @@ export default class Player extends Component {
         }
         this.setState({blockScreen: true});
         // axios.post("http://localhost:8092/ui/player", data)
-        axios.post("https://derff.herokuapp.com/ui/player", data)
+        axios.post(localStorage.getItem("host")+"player", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                // this.setState(this.initialState);
@@ -227,7 +227,7 @@ export default class Player extends Component {
         }
         this.setState({blockScreen: true});
       //  axios.put("http://localhost:8092/ui/player", data)
-       axios.put("https://derff.herokuapp.com/ui/player", data)
+       axios.put(localStorage.getItem("host")+"player", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 this.setState({

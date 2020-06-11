@@ -28,7 +28,7 @@ export default class Standings extends Component {
             isLoading: true,
             isErrorLoading: false,
         });
-        axios.get("https://derff.herokuapp.com/ui/statistic/" + command)
+        axios.get(localStorage.getItem("host")+"statistic/" + command)
         // axios.get("http://localhost:8092/ui/statistic/" + command)
             .then(response => response.data)
             .then((data) => {

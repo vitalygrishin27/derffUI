@@ -2,13 +2,18 @@ import React, {Component} from "react";
 import {Jumbotron} from "react-bootstrap";
 
 export default class Welcome extends Component {
+
+    componentDidMount() {
+       // localStorage.setItem("host", "https://derff.herokuapp.com/ui/")
+        localStorage.setItem("host", "http://localhost:8092/ui/")
+    }
+
     render() {
         return (
             <Jumbotron className="bg-dark text-white">
-                <h1>Добро пожаловать на сайт ДРФФ</h1>
+                <h1>Дергачівська районна федерація футболу</h1>
                 <p>
-                    Этот ресурс предназначен для менеджмента командами, игроками и статистикой.<br/>
-                    Сезон 2020
+                    Ресурс для адміністрування змагань сезону 2020
                 </p>
             </Jumbotron>
         );

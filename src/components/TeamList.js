@@ -48,7 +48,7 @@ export default class TeamList extends Component {
         this.setState({
             isLoadingTeamList: true,
         });
-        axios.get("https://derff.herokuapp.com/ui/teamsInSeason/" + this.state.currentSeasonYear)
+        axios.get(localStorage.getItem("host")+"teamsInSeason/" + this.state.currentSeasonYear)
             //  axios.get("http://localhost:8092/ui/teamsInSeason/"+this.state.currentSeasonYear)
             .then(response => response.data)
             .then((data) => {
@@ -69,7 +69,7 @@ export default class TeamList extends Component {
         this.setState({
             isLoadingSeason: true,
         });
-        axios.get("https://derff.herokuapp.com/ui/currentSeason")
+        axios.get(localStorage.getItem("host")+"currentSeason")
             // axios.get("http://localhost:8092/ui/currentSeason")
             .then(response => response.data)
             .then((data) => {

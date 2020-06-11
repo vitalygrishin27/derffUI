@@ -54,7 +54,7 @@ export default class Team extends Component {
     };
 
     fillListUnRegisteredTeam = () => {
-        axios.get("https://derff.herokuapp.com/ui/unRegisteredTeams")
+        axios.get(localStorage.getItem("host")+"unRegisteredTeams")
             // axios.get("http://localhost:8092/ui/unRegisteredTeams")
             .then(response => {
                 console.log(response);
@@ -73,7 +73,7 @@ export default class Team extends Component {
         this.setState({
             blockScreen: true
         });
-        axios.get("https://derff.herokuapp.com/ui/team/" + teamId)
+        axios.get(localStorage.getItem("host")+"team/" + teamId)
             //  axios.get("http://localhost:8092/ui/team/" + teamId)
             .then(response => {
                 console.log(response);
@@ -126,7 +126,7 @@ export default class Team extends Component {
         }
         this.setState({blockScreen: true});
         //    axios.post("http://localhost:8092/ui/team", data)
-        axios.post("https://derff.herokuapp.com/ui/team", data)
+        axios.post(localStorage.getItem("host")+"team", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 this.setState(this.initialState);
@@ -160,7 +160,7 @@ export default class Team extends Component {
         }
         this.setState({blockScreen: true});
         // axios.put("http://localhost:8092/ui/team", data)
-        axios.put("https://derff.herokuapp.com/ui/team", data)
+        axios.put(localStorage.getItem("host")+"team", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 this.setState(this.initialState);

@@ -45,7 +45,7 @@ export default class PlayerList extends Component {
         this.setState({
             isLoadingPlayerList: true,
         });
-        axios.get("https://derff.herokuapp.com/ui/seasons/" + year + "/teams/" + teamId + "/players")
+        axios.get(localStorage.getItem("host")+"seasons/" + year + "/teams/" + teamId + "/players")
         //     axios.get("http://localhost:8092/ui/seasons/"+year+"/teams/"+teamId+"/players")
             .then(response => response.data)
             .then((data) => {
@@ -67,7 +67,7 @@ export default class PlayerList extends Component {
         this.setState({
             isLoadingSeason: true,
         });
-        axios.get("https://derff.herokuapp.com/ui/currentSeason")
+        axios.get(localStorage.getItem("host")+"currentSeason")
             // axios.get("http://localhost:8092/ui/currentSeason")
             .then(response => response.data)
             .then((data) => {
@@ -85,7 +85,7 @@ export default class PlayerList extends Component {
     };
 
     deletePlayer = (playerId) => {
-        axios.delete("https://derff.herokuapp.com/ui/players/" + playerId)
+        axios.delete(localStorage.getItem("host")+"players/" + playerId)
             // axios.delete("http://localhost:8092/ui/players/" + playerId)
             .then(response => {
                 if (response.data != null) {

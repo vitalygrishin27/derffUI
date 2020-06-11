@@ -21,7 +21,7 @@ export default class Standings extends Component {
         this.setState({
             isLoading: true,
         });
-          axios.get("https://derff.herokuapp.com/ui/standings")
+          axios.get(localStorage.getItem("host")+"standings")
       //  axios.get("http://localhost:8092/ui/standings")
             .then(response => response.data)
             .then((data) => {
