@@ -185,7 +185,7 @@ export default class TeamList extends Component {
                                                             <FontAwesomeIcon icon={faAddressBook}/>
                                                         </Link>
                                                         <Link className="btn btn-sm btn-outline-warning"
-                                                              style={{"display": this.state.isAuthenticated && (this.state.teamIds.match(team.id) || this.state.role.match("ADMINISTRATOR"))  ? "block" : "none"}}
+                                                              style={{"display": (this.state.role && this.state.role.match("ADMINISTRATOR")) || this.state.isAuthenticated && (this.state.teamIds.match(team.id) || this.state.role.match("ADMINISTRATOR"))  ? "block" : "none"}}
                                                               to={"edit/" + team.id}>{' '}
                                                             <FontAwesomeIcon icon={faEdit}/>
                                                         </Link>
