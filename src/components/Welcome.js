@@ -5,7 +5,7 @@ export default class Welcome extends Component {
 
     componentDidMount() {
        localStorage.setItem("host", "https://derff.herokuapp.com/ui/")
-       // localStorage.setItem("host", "http://localhost:8092/ui/")
+      // localStorage.setItem("host", "http://localhost:8092/ui/")
     }
 
     render() {
