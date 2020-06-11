@@ -190,7 +190,7 @@ export default class TeamList extends Component {
                                                             <FontAwesomeIcon icon={faEdit}/>
                                                         </Link>
                                                         <Button size={"sm"} variant={"outline-danger"}
-                                                                style={{"display": this.state.isAuthenticated && this.state.role.match("ADMINISTRATOR") ? "block" : "none"}}
+                                                                style={{"display": this.state.role && this.state.role.match("ADMINISTRATOR") ? "block" : "none"}}
                                                                 onClick={this.deleteTeam.bind(this, team.id)}><FontAwesomeIcon
                                                             icon={faTrash}/></Button>{' '}
                                                     </ButtonGroup>
