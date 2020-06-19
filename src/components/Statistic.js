@@ -9,7 +9,7 @@ export default class Standings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            commandText: '',
+            isSkipGamesTable: false,
             isLoading: false,
             dataInfo: [],
         };
@@ -28,12 +28,13 @@ export default class Standings extends Component {
             isLoading: true,
             isErrorLoading: false,
         });
-        axios.get(localStorage.getItem("host")+"statistic/" + command)
-        // axios.get("http://localhost:8092/ui/statistic/" + command)
+        axios.get(localStorage.getItem("host") + "statistic/" + command)
+            // axios.get("http://localhost:8092/ui/statistic/" + command)
             .then(response => response.data)
             .then((data) => {
                 // alert(data);
                 this.setState({
+                    isSkipGamesTable: command==="skipGames",
                     dataInfo: data,
                     isLoading: false,
                     isErrorLoading: false,
@@ -52,10 +53,11 @@ export default class Standings extends Component {
         const isLoading = this.state.isLoading;
         const dataInfo = this.state.dataInfo;
         const isErrorLoading = this.state.isErrorLoading;
+        const isSkipGamesTable = this.state.isSkipGamesTable;
         return (
             <div>
                 <Card className={"border border-dark bg-dark text-white"}>
-                    <Card.Header><FontAwesomeIcon icon={faList}/> {this.state.commandText}
+                    <Card.Header><FontAwesomeIcon icon={faList}/>
                         <ButtonGroup>
                             <Button size={"sm"} variant={"outline-success"}
                                     onClick={this.getStatisticFromBackEnd.bind(this, "bombardiers")}>Бомбардири</Button>&nbsp;
@@ -70,12 +72,22 @@ export default class Standings extends Component {
                     <Card.Body>
                         <Table striped bordered hover variant={"dark"}>
                             <thead>
-                            <tr style={{"color": "#ffcb3b"}}>
-                                <th>№</th>
-                                <th>Гравець</th>
-                                <th>Команда</th>
-                                <th>Кількість</th>
-                            </tr>
+                            {
+                                !isSkipGamesTable ?
+                                    <tr style={{"color": "#ffcb3b"}}>
+                                        <th>№</th>
+                                        <th>Гравець</th>
+                                        <th>Команда</th>
+                                        <th>Кількість</th>
+                                    </tr> :
+                                    <tr style={{"color": "#ffcb3b"}}>
+                                        <th>№</th>
+                                        <th>Гравець</th>
+                                        <th>Команда</th>
+                                        <th>Дата</th>
+                                        <th>Інформація</th>
+                                    </tr>
+                            }
                             </thead>
                             <tbody>
                             {
@@ -106,7 +118,11 @@ export default class Standings extends Component {
                                                         "fontSize": "15pt",
                                                         "fontWeight": "600",
                                                         "textAlign": "center"
-                                                    }}>{row.value}</td>
+                                                    }}>{!isSkipGamesTable? row.value : row.stringDate}</td>
+                                                    {isSkipGamesTable ?
+                                                    <td>{row.details}</td>:
+                                                        ''
+                                                    }
                                                 </tr>
                                             ))
                             }
