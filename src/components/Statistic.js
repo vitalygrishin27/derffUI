@@ -9,6 +9,7 @@ export default class Standings extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            title: '',
             isSkipGamesTable: false,
             isLoading: false,
             dataInfo: [],
@@ -34,7 +35,8 @@ export default class Standings extends Component {
             .then((data) => {
                 // alert(data);
                 this.setState({
-                    isSkipGamesTable: command==="skipGames",
+                    title: command === "skipGames" ? "Пропуск ігор" : command === "yellowCards" ? "Жовті картки" : "Бомбардири",
+                    isSkipGamesTable: command === "skipGames",
                     dataInfo: data,
                     isLoading: false,
                     isErrorLoading: false,
@@ -57,7 +59,7 @@ export default class Standings extends Component {
         return (
             <div>
                 <Card className={"border border-dark bg-dark text-white"}>
-                    <Card.Header><FontAwesomeIcon icon={faList}/>
+                    <Card.Header><FontAwesomeIcon icon={faList}/> &nbsp;{this.state.title}&nbsp;
                         <ButtonGroup>
                             <Button size={"sm"} variant={"outline-success"}
                                     onClick={this.getStatisticFromBackEnd.bind(this, "bombardiers")}>Бомбардири</Button>&nbsp;
@@ -118,9 +120,9 @@ export default class Standings extends Component {
                                                         "fontSize": "15pt",
                                                         "fontWeight": "600",
                                                         "textAlign": "center"
-                                                    }}>{!isSkipGamesTable? row.value : row.stringDate}</td>
+                                                    }}>{!isSkipGamesTable ? row.value : row.stringDate}</td>
                                                     {isSkipGamesTable ?
-                                                    <td>{row.details}</td>:
+                                                        <td>{row.details}</td> :
                                                         ''
                                                     }
                                                 </tr>
