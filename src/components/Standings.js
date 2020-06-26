@@ -8,6 +8,7 @@ export default class Standings extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            fullTable: false,
             isLoading: false,
             standings: [],
         };
