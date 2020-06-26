@@ -73,15 +73,33 @@ export default class Standings extends Component {
                     </Card.Header>
                     <Card.Body>
                         <Table striped bordered hover variant={"dark"}>
-                            <thead>
                             {
                                 !isSkipGamesTable ?
+                                    <thead>
+                                    <tr style={{"color": "#ffcb3b"}}>
+                                        <th colSpan='4' style={{
+                                            "fontSize": "15pt",
+                                            "fontWeight": "600",
+                                            "textAlign": "center"
+                                        }}> {this.state.title}
+                                        </th>
+                                    </tr>
                                     <tr style={{"color": "#ffcb3b"}}>
                                         <th>№</th>
                                         <th>Гравець</th>
                                         <th>Команда</th>
                                         <th>Кількість</th>
-                                    </tr> :
+                                    </tr>
+                                    </thead> :
+                                    <thead>
+                                    <tr style={{"color": "#ffcb3b"}}>
+                                        <th colSpan='5' style={{
+                                            "fontSize": "15pt",
+                                            "fontWeight": "600",
+                                            "textAlign": "center"
+                                        }}> {this.state.title}
+                                        </th>
+                                    </tr>
                                     <tr style={{"color": "#ffcb3b"}}>
                                         <th>№</th>
                                         <th>Гравець</th>
@@ -89,8 +107,8 @@ export default class Standings extends Component {
                                         <th>Дата</th>
                                         <th>Інформація</th>
                                     </tr>
+                                    </thead>
                             }
-                            </thead>
                             <tbody>
                             {
                                 isErrorLoading ?

@@ -3,6 +3,19 @@ import {Navbar, Nav, Card} from 'react-bootstrap';
 import {Link} from "react-router-dom";
 
 export default class NavigationBar extends Component {
+
+    constructor(props) {
+        super(props);
+        this.setState({'logIn': true});
+    }
+
+    clearLocaleStorage = () => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("teamIds");
+        localStorage.removeItem("role");
+        this.setState({'logIn': false});
+    }
+
     render() {
         return (
             <Navbar variant="dark" className={"text-white"} style={{ backgroundColor: 'transparent' }}>
@@ -30,9 +43,13 @@ export default class NavigationBar extends Component {
                     </Link>
                 </Nav>
                 <Nav className="mr-auto">
-                    <Link className="nav-link" to={"/login"}>
-                        Увійти до системи
-                    </Link>
+                    {localStorage.getItem('role') ?
+                        <a style={{"cursor":"pointer"}} className="nav-link" onClick={this.clearLocaleStorage.bind()}>
+                            Вийти
+                        </a> :
+                        <Link className="nav-link" to={"/login"}>
+                            Увійти до системи
+                        </Link> }
                 </Nav>
             </Navbar>
         );

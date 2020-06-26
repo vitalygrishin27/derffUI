@@ -110,6 +110,13 @@ export default class GameList extends Component {
                     <Card.Body>
                         <Table striped bordered hover variant={"dark"} style={{"width": "50%", 'display': 'table'}}>
                             <thead>
+                            <tr style={{"color": "#ffcb3b"}}>
+                                <th colSpan='5' style={{
+                                    "fontSize": "15pt",
+                                    "fontWeight": "600",
+                                    "textAlign": "center"
+                                }}>{this.state.activeTour}</th>
+                            </tr>
                             <tr>
                                 <th>Дата</th>
                                 <th>Господарі</th>
