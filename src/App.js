@@ -14,6 +14,7 @@ import Standings from "./components/Standings";
 import Statistic from "./components/Statistic";
 import Login from "./components/Login";
 import GameList from "./components/GameList";
+import GameResultWizard from "./components/wizard/GameResultWizard";
 
 function App() {
     const marginTop = {
@@ -37,6 +38,7 @@ function App() {
                             <Route path={"/standings"} exact component = {Standings}/>
                             <Route path={"/statistic"} exact component = {Statistic}/>
                             <Route path={"/games"} exact component = {GameList}/>
+                            <Route path={"/games/result/:gameId/:masterTeamName/:slaveTeamName"} exact component = {GameResultWizard}/>
                         </Switch>
                     </Col>
                 </Row>

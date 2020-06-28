@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {Button, ButtonGroup, Card, Dropdown, DropdownButton, Image, Table} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faAddressBook, faList, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faAddressBook, faList, faRegistered, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 
 export default class GameList extends Component {
@@ -158,6 +158,10 @@ export default class GameList extends Component {
                                                 {(localStorage.getItem("role") && localStorage.getItem("role").match("ADMINISTRATOR")) ?
                                                     <td>
                                                         <ButtonGroup>
+                                                            <Link className="btn btn-sm btn-outline-primary"
+                                                                  to={"/games/result/" + game.id + "/" + game.masterTeamName + "/" + game.slaveTeamName}>{' '}
+                                                                <FontAwesomeIcon icon={faRegistered}/>
+                                                            </Link>{' '}
                                                             <Link className="btn btn-sm btn-outline-warning"
                                                                   to={"/games/" + game.id}>{' '}
                                                                 <FontAwesomeIcon icon={faAddressBook}/>
