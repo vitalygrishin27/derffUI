@@ -169,21 +169,22 @@ export default class Standings extends Component {
                                                     "fontWeight": "600",
                                                     "textAlign": "center"
                                                 }}>
-                                                    <td>{count + 1}</td>
-                                                    <td style={{whiteSpace: "nowrap", "textAlign": "left"}}>{standingsRow.teamName}</td>
+                                                    <td style={{"vertical-align": "middle"}}>{count + 1}</td>
+                                                    <td style={{whiteSpace: "nowrap", "textAlign": "left", "vertical-align": "middle"}}>{standingsRow.teamName}</td>
                                                     {standingsRow.gameResults.map((gameResult) =>(
-                                                        //<td style={{whiteSpace: "nowrap"}}>{gameResult}</td>
-                                                        <td>{gameResult}</td>
+                                                        <td style={{"vertical-align": "middle"}}>{gameResult}</td>
+                                                        //<td>{gameResult}</td>
                                                     ))}
-                                                    <td style={{"background": "#328734"}}>{standingsRow.wins}</td>
+                                                    <td style={{"background": "#328734", "vertical-align": "middle"}}>{standingsRow.wins}</td>
                                                     <td style={{
                                                         "background": "#e3d432",
+                                                        "vertical-align": "middle",
                                                         "color": "#252F48"
                                                     }}>{standingsRow.draws}</td>
-                                                    <td style={{"background": "#9e1616"}}>{standingsRow.losses}</td>
-                                                    <td>{standingsRow.games}</td>
-                                                    <td style={{"fontSize": "11pt"}}>{standingsRow.stringRatioGoals}</td>
-                                                    <td>{standingsRow.points}</td>
+                                                    <td style={{"background": "#9e1616", "vertical-align": "middle"}}>{standingsRow.losses}</td>
+                                                    <td style={{"vertical-align": "middle"}}>{standingsRow.games}</td>
+                                                    <td style={{"fontSize": "11pt", "vertical-align": "middle"}}>{standingsRow.stringRatioGoals}</td>
+                                                    <td style={{"vertical-align": "middle"}}>{standingsRow.points}</td>
                                                 </tr>
                                             ))
                                 }
