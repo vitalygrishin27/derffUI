@@ -140,10 +140,10 @@ export default class Standings extends Component {
                                 <tr style={{"color": "#ffcb3b"}}>
                                     <th>№</th>
                                     <th>Команда</th>
-                                    {standings.map((standingsRow, count) =>(
+                                    {standings.map((standingsRow, count) => (
                                         <th style={{
                                             "textAlign": "center"
-                                        }}>{count+1}</th>
+                                        }}>{count + 1}</th>
                                     ))}
                                     <th>П</th>
                                     <th>Н</th>
@@ -172,7 +172,8 @@ export default class Standings extends Component {
                                                     <td>{count + 1}</td>
                                                     <td style={{whiteSpace: "nowrap", "textAlign": "left"}}>{standingsRow.teamName}</td>
                                                     {standingsRow.gameResults.map((gameResult) =>(
-                                                        <td style={{whiteSpace: "nowrap"}}>{gameResult}</td>
+                                                        //<td style={{whiteSpace: "nowrap"}}>{gameResult}</td>
+                                                        <td>{gameResult}</td>
                                                     ))}
                                                     <td style={{"background": "#328734"}}>{standingsRow.wins}</td>
                                                     <td style={{
