@@ -12,6 +12,7 @@ export default class GameList extends Component {
             host: localStorage.getItem("host"),
             tours: [],
             activeTour: '',
+            activeTourId: -1,
             gamesInCurrentTour: []
         };
     }
@@ -77,7 +78,7 @@ export default class GameList extends Component {
     }
 
     addNewGame = () => {
-
+        alert(this.state.activeTour);
     }
 
     deleteGame = () => {
@@ -90,22 +91,36 @@ export default class GameList extends Component {
         const isErrorLoading = this.state.isErrorLoading;
         return (
             <div>
-                <DropdownButton id="dropdown-basic-button" title=
-                    {isLoadingTourList ? "Идет загрузка" : "Обрати тур"}>
-                    {this.state.tours.map((tour) => (
-                        <Dropdown.Item onClick={() => this.setState({activeTour: tour.tourName})}>
-                            {tour.tourName}
-                        </Dropdown.Item>
-                    ))}
-                </DropdownButton>
-
+                <div style={{"display": "inline"}}>
+                    <DropdownButton style={{"display": "inline"}} id="dropdown-basic-button" title=
+                        {isLoadingTourList ? "Идет загрузка" : "Обрати тур"}>
+                        {this.state.tours.map((tour, count) => (
+                            <Dropdown.Item style={{"padding-bottom": count==this.state.tours.length-1 ? "50px": "5px" }} onClick={() => this.setState({activeTour: tour.tourName, activeTourId: tour.id})}>
+                                {tour.tourName}
+                            </Dropdown.Item>
+                        ))}
+                    </DropdownButton>
+                    <Link style={{"display": "inline"}} className="nav-link" to={"/tours"}>
+                        <Button size="sm" variant="info" type="button"
+                                style={{"display": (localStorage.getItem("role") && localStorage.getItem("role").match("ADMINISTRATOR")) ? "inline" : "none"}}
+                            //  onClick={this.addNewGame.bind()}
+                        >
+                            <FontAwesomeIcon icon={faList}/> Управління турами
+                        </Button>
+                    </Link>
+                </div>
                 <Card className={"text-white"} style={{backgroundColor: 'transparent'}}>
                     <Card.Header><FontAwesomeIcon icon={faList}/> Ігри {this.state.activeTour}
-                        {'  '}<Button size="sm" variant="info" type="button"
-                                      style={{"display": (localStorage.getItem("role") && localStorage.getItem("role").match("ADMINISTRATOR")) ? "inline" : "none"}}
-                                      onClick={this.addNewGame.bind()}>
-                            <FontAwesomeIcon icon={faList}/> Додати гру
-                        </Button>
+                        {'  '}{'  '}
+                        <Link style={{"display": "inline"}} className="nav-link"
+                              to={"tours/" + this.state.activeTourId + "/" + this.state.activeTour + "/games/-1"}>
+                            <Button size="sm" variant="info" type="button"
+                                    style={{"display": (localStorage.getItem("role") && localStorage.getItem("role").match("ADMINISTRATOR") && this.state.activeTour) ? "inline" : "none"}}
+                                //  onClick={this.addNewGame.bind()}
+                            >
+                                <FontAwesomeIcon icon={faList}/> Додати гру
+                            </Button>
+                        </Link>
                     </Card.Header>
                     <Card.Body>
                         <Table striped bordered hover variant={"dark"} style={{"width": "50%", 'display': 'table'}}>
@@ -139,12 +154,14 @@ export default class GameList extends Component {
                                         this.state.gamesInCurrentTour.map((game) => (
                                             <tr key={game.id}>
                                                 <td>{game.date ? game.date.toString().substring(0, 10) : ''}</td>
-                                                <td style={{whiteSpace: "nowrap"}}><Image src={game.masterTeamSymbolString} roundedCircle width={"50"}
-                                                           height={"50"}/>{'  '}
+                                                <td style={{whiteSpace: "nowrap"}}><Image
+                                                    src={game.masterTeamSymbolString} roundedCircle width={"50"}
+                                                    height={"50"}/>{'  '}
                                                     {game.masterTeamName}
                                                 </td>
-                                                <td style={{whiteSpace: "nowrap"}}><Image src={game.slaveTeamSymbolString} roundedCircle width={"50"}
-                                                           height={"50"}/>{'  '}
+                                                <td style={{whiteSpace: "nowrap"}}><Image
+                                                    src={game.slaveTeamSymbolString} roundedCircle width={"50"}
+                                                    height={"50"}/>{'  '}
                                                     {game.slaveTeamName}
                                                 </td>
                                                 {game.resultSave ?
@@ -162,11 +179,14 @@ export default class GameList extends Component {
                                                                   to={"/games/result/" + game.id + "/" + game.masterTeamName + "/" + game.slaveTeamName}>{' '}
                                                                 <FontAwesomeIcon icon={faRegistered}/>
                                                             </Link>{' '}
-                                                            <Link className="btn btn-sm btn-outline-warning"
-                                                                  to={"/games/" + game.id}>{' '}
+                                                            <Link style={{"display": !game.resultSave ? "block" : "none"}}
+                                                                className="btn btn-sm btn-outline-warning"
+                                                                  to={"tours/" + this.state.activeTourId + "/" + this.state.activeTour + "/games/"+ game.id}>
                                                                 <FontAwesomeIcon icon={faAddressBook}/>
                                                             </Link>{' '}
-                                                            <Button size={"sm"} variant={"outline-danger"}
+                                                            <Button
+                                                                style={{"display": !game.resultSave ? "block" : "none"}}
+                                                                size={"sm"} variant={"outline-danger"}
                                                                     onClick={this.deleteGame.bind(this, game.id)}><FontAwesomeIcon
                                                                 icon={faTrash}/></Button>{' '}
                                                         </ButtonGroup>

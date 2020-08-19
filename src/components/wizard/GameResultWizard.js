@@ -56,7 +56,7 @@ export default class GameResultWizard extends Component {
             isLoading: true,
             isErrorLoading: false,
         });
-        axios.get(localStorage.getItem("host") + "games/" + gameId)
+        axios.get(localStorage.getItem("host") + "games/result/" + gameId)
             .then(response => response.data)
             .then((data) => {
                 console.log(data);
