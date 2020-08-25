@@ -94,7 +94,7 @@ export default class CompetitionList extends Component {
                     <div style={{"display": "inline"}}>
                     <Card.Header><FontAwesomeIcon icon={faList}/>Змагання сезону</Card.Header>
                     <Link style={{"display": "inline"}} className="nav-link"
-                          to={"competition/"+this.state.competitionId+"/"+this.state.competitionName}>{' '}
+                          to={"competition/-1/ "}>{' '}
 
                         <Button size="sm" variant="info" type="button"
                                 style={{"display": (localStorage.getItem("role") && localStorage.getItem("role").match("ADMINISTRATOR")) ? "inline" : "none"}}
