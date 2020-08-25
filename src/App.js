@@ -18,6 +18,8 @@ import GameResultWizard from "./components/wizard/GameResultWizard";
 import Game from "./components/Game";
 import TourList from "./components/TourList";
 import Tour from "./components/Tour";
+import Competition from "./components/Competition";
+import CompetitionList from "./components/CompetitionList";
 
 function App() {
     const marginTop = {
@@ -44,6 +46,8 @@ function App() {
                             <Route path={"/tours/:tourId/:tourName/games/:gameId"} exact component = {Game}/>
                             <Route path={"/games/result/:gameId/:masterTeamName/:slaveTeamName"} exact component = {GameResultWizard}/>
                             <Route path={"/competition/:competitionId/:competitionName/tours/:tourId/:tourName"} exact component = {Tour}/>
+                            <Route path={"/competition/:competitionId/:competitionName"} exact component = {Competition}/>
+                            <Route path={"/competitions"} exact component = {CompetitionList}/>
                             <Route path={"/tours"} exact component = {TourList}/>
                         </Switch>
                     </Col>

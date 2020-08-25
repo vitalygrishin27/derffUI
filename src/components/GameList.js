@@ -108,6 +108,14 @@ export default class GameList extends Component {
                             <FontAwesomeIcon icon={faList}/> Управління турами
                         </Button>
                     </Link>
+                    <Link style={{"display": "inline"}} className="nav-link" to={"/competitions"}>
+                        <Button size="sm" variant="info" type="button"
+                                style={{"display": (localStorage.getItem("role") && localStorage.getItem("role").match("ADMINISTRATOR")) ? "inline" : "none"}}
+                            //  onClick={this.addNewGame.bind()}
+                        >
+                            <FontAwesomeIcon icon={faList}/> Управління змаганнями
+                        </Button>
+                    </Link>
                 </div>
                 <Card className={"text-white"} style={{backgroundColor: 'transparent'}}>
                     <Card.Header><FontAwesomeIcon icon={faList}/> Ігри {this.state.activeTour}
