@@ -224,7 +224,7 @@ export default class Competition extends Component {
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header><FontAwesomeIcon
-                        icon={this.state.id ? faEdit : faPlusCircle}/> {this.state.competitionId !=-1 ? "Оновити дані змагання " + this.state.tourName : "Створити нове змагання "}
+                        icon={this.state.id ? faEdit : faPlusCircle}/> {this.state.competitionId !=-1 ? "Оновити дані змагання " + this.state.competitionName : "Створити нове змагання "}
                     </Card.Header>
                     <Form onReset={this.resetForm}
                           onSubmit={this.state.сompetitionId != -1 ? this.submitCompetition : this.submitCompetition}
