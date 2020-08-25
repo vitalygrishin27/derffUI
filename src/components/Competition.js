@@ -51,7 +51,7 @@ export default class Competition extends Component {
                     this.setState({
                         competitionId: response.data.id,
                         competitionName: response.data.name,
-                        isForStandings: response.data.isForStandings,
+                        isForStandings: response.data.forStandings,
                         method: 'put',
                         blockScreen: false,
                     });
@@ -226,7 +226,8 @@ export default class Competition extends Component {
                     <Card.Header><FontAwesomeIcon
                         icon={this.state.id ? faEdit : faPlusCircle}/> {this.state.competitionId !=-1 ? "Оновити дані змагання " + this.state.tourName : "Створити нове змагання "}
                     </Card.Header>
-                    <Form onReset={this.resetForm} onSubmit={this.state.сompetitionId!=-1 ? this.submitCompetition : this.submitCompetition}
+                    <Form onReset={this.resetForm}
+                          onSubmit={this.state.сompetitionId != -1 ? this.submitCompetition : this.submitCompetition}
                           id="CompetitionFormId">
                         <Card.Body>
                             <Form.Row>
