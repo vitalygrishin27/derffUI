@@ -149,6 +149,16 @@ export default class TeamList extends Component {
                 </div>
                 <Card className={"text-white"} style={{ backgroundColor: 'transparent' }} >
                     <Card.Header><FontAwesomeIcon icon={faList}/> Команды сезона</Card.Header>
+                    <Link style={{"display": "inline"}} className="nav-link"
+                          to={"add"}>{' '}
+
+                        <Button size="sm" variant="info" type="button"
+                                style={{"display": (localStorage.getItem("role") && localStorage.getItem("role").match("ADMINISTRATOR")) ? "inline" : "none"}}
+                            //  onClick={this.addNewGame.bind()}
+                        >
+                            <FontAwesomeIcon icon={faList}/> Додати команду
+                        </Button>
+                    </Link>
                     <Card.Body>
                         <Table striped bordered hover variant={"dark"}>
                             <thead>
