@@ -3,7 +3,6 @@ import axios from "axios";
 import {Button, ButtonGroup, Card, Image, Table} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAddressBook, faEdit, faList, faTrash} from "@fortawesome/free-solid-svg-icons";
-import {Link} from "react-router-dom";
 
 export default class Standings extends Component {
     constructor(props) {
@@ -113,7 +112,7 @@ export default class Standings extends Component {
                             {
                                 isErrorLoading ?
                                     <tr align={"center"}>
-                                        <td colSpan={"11"}>Помилка при завантаженні</td>
+                                        <td colSpan={"11"}>Статистика ще формується на сервері. Перезавантажте сторінку пізніше.</td>
                                     </tr> :
                                     dataInfo.length === 0 && !isLoading ?
                                         <tr align={"center"}>
