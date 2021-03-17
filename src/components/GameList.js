@@ -4,6 +4,7 @@ import {Button, ButtonGroup, Card, Dropdown, DropdownButton, Image, Table} from 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAddressBook, faList, faRegistered, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
+import FileDownload from "js-file-download"
 
 export default class GameList extends Component {
     constructor(props) {
@@ -15,6 +16,7 @@ export default class GameList extends Component {
             activeTourId: -1,
             gamesInCurrentTour: []
         };
+        this.printReport = this.printReport.bind(this);
     }
 
     componentDidMount() {
@@ -85,6 +87,19 @@ export default class GameList extends Component {
 
     }
 
+    printReport = (gameId, masterTeamName, slaveTeamName) => {
+        axios({
+          method:'GET',
+          url: this.state.host + "report/" + gameId,
+          responseType: 'blob',
+          headers: {
+              'Content-Type': "application/vnd.ms-excel",
+          },
+        }).then((result) => {
+            FileDownload(result.data, masterTeamName + "-" + slaveTeamName + ".xls");
+        });
+    };
+
     render() {
         const isLoadingGameList = this.state.isLoadingGameList;
         const isLoadingTourList = this.state.isLoadingTourList;
@@ -95,7 +110,9 @@ export default class GameList extends Component {
                     <DropdownButton style={{"display": "inline"}} id="dropdown-basic-button" title=
                         {isLoadingTourList ? "Идет загрузка" : "Обрати тур"}>
                         {this.state.tours.map((tour, count) => (
-                            <Dropdown.Item style={{"padding-bottom": count==this.state.tours.length-1 ? "50px": "5px" }} onClick={() => this.setState({activeTour: tour.tourName, activeTourId: tour.id})}>
+                            <Dropdown.Item
+                                style={{"padding-bottom": count == this.state.tours.length - 1 ? "50px" : "5px"}}
+                                onClick={() => this.setState({activeTour: tour.tourName, activeTourId: tour.id})}>
                                 {tour.tourName}
                             </Dropdown.Item>
                         ))}
@@ -134,7 +151,7 @@ export default class GameList extends Component {
                         <Table striped bordered hover variant={"dark"} style={{"width": "50%", 'display': 'table'}}>
                             <thead>
                             <tr style={{"color": "#ffcb3b"}}>
-                                <th colSpan='5' style={{
+                                <th colSpan='6' style={{
                                     "fontSize": "15pt",
                                     "fontWeight": "600",
                                     "textAlign": "center"
@@ -145,6 +162,7 @@ export default class GameList extends Component {
                                 <th>Господарі</th>
                                 <th>Гості</th>
                                 <th>Результат</th>
+                                <th>Рапорт</th>
                                 {(localStorage.getItem("role") && localStorage.getItem("role").match("ADMINISTRATOR")) ?
                                     <th>Дії</th> : ""}
                             </tr>
@@ -180,6 +198,14 @@ export default class GameList extends Component {
                                                     }}>{game.masterGoalsCount + " : " + game.slaveGoalsCount}</td> :
                                                     <td> - </td>
                                                 }
+                                                <td>
+                                                    <ButtonGroup>
+                                                        <Button size="sm" variant="info" type="button"
+                                                                onClick={this.printReport.bind(this, game.id, game.masterTeamName, game.slaveTeamName)}>
+                                                            <FontAwesomeIcon icon={faList}/>
+                                                        </Button>
+                                                    </ButtonGroup>
+                                                </td>
                                                 {(localStorage.getItem("role") && localStorage.getItem("role").match("ADMINISTRATOR")) ?
                                                     <td>
                                                         <ButtonGroup>
@@ -187,15 +213,16 @@ export default class GameList extends Component {
                                                                   to={"/games/result/" + game.id + "/" + game.masterTeamName + "/" + game.slaveTeamName}>{' '}
                                                                 <FontAwesomeIcon icon={faRegistered}/>
                                                             </Link>{' '}
-                                                            <Link style={{"display": !game.resultSave ? "block" : "none"}}
+                                                            <Link
+                                                                style={{"display": !game.resultSave ? "block" : "none"}}
                                                                 className="btn btn-sm btn-outline-warning"
-                                                                  to={"tours/" + this.state.activeTourId + "/" + this.state.activeTour + "/games/"+ game.id}>
+                                                                to={"tours/" + this.state.activeTourId + "/" + this.state.activeTour + "/games/" + game.id}>
                                                                 <FontAwesomeIcon icon={faAddressBook}/>
                                                             </Link>{' '}
                                                             <Button
                                                                 style={{"display": !game.resultSave ? "block" : "none"}}
                                                                 size={"sm"} variant={"outline-danger"}
-                                                                    onClick={this.deleteGame.bind(this, game.id)}><FontAwesomeIcon
+                                                                onClick={this.deleteGame.bind(this, game.id)}><FontAwesomeIcon
                                                                 icon={faTrash}/></Button>{' '}
                                                         </ButtonGroup>
                                                     </td>
