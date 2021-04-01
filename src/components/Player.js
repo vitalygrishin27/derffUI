@@ -392,7 +392,9 @@ export default class Player extends Component {
                         <DropdownButton id="dropdown-basic-button" title=
                             {this.state.loadingUnregisteredPlayer ? "Идет загрузка" : "Не заявленные игроки"}>
                             {this.state.unRegisteredPlayers.map((player, count) => (
-                                <Dropdown.Item onClick={() => this.setState({id: player.id})}>
+                                <Dropdown.Item
+                                    style={{"padding-bottom": count == this.state.unRegisteredPlayers.length - 1 ? "50px" : "5px"}}
+                                    onClick={() => this.setState({id: player.id})}>
                                     {player.lastName}
                                     {' '}{player.firstName}
                                     {' '}{player.secondName}
