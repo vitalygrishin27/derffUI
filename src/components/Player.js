@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Card, Form, Button, Col, Image, DropdownButton, Dropdown} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlusCircle, faSave, faEdit, faTrash, faUndo, faList, faUpload} from '@fortawesome/free-solid-svg-icons';
+import {MDBBadge, MDBContainer} from "mdbreact";
 import axios from 'axios';
 import ToastMessage from "./ToastMessage";
 import ScreenBlocker from "./ScreenBlocker";
@@ -22,6 +23,7 @@ export default class Player extends Component {
         this.submitPlayer = this.submitPlayer.bind(this);
         this.fileChose = this.fileChose.bind(this);
         this.resetForm = this.resetForm.bind(this);
+        this.searchPlayers = this.searchPlayers.bind(this);
     }
 
     initialState = {
@@ -54,7 +56,7 @@ export default class Player extends Component {
         if (playerId) {
             this.findPlayerById(playerId);
         }
-        this.fillListUnRegisteredPlayer();
+        this.fillListUnRegisteredPlayer("А");
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -63,13 +65,17 @@ export default class Player extends Component {
         }
     };
 
-    fillListUnRegisteredPlayer = () => {
+    searchPlayers(letter){
+        this.fillListUnRegisteredPlayer(letter);
+    }
+
+    fillListUnRegisteredPlayer = (letter) => {
         this.setState({
             loadingUnregisteredPlayer: true,
         });
 
-        axios.get(localStorage.getItem("host")+"unRegisteredPlayers")
-        //axios.get("http://localhost:8092/ui/unRegisteredPlayers")
+        axios.get(localStorage.getItem("host") + "unRegisteredPlayers/"+letter)
+            //axios.get("http://localhost:8092/ui/unRegisteredPlayers")
             .then(response => {
                 console.log(response);
                 if (response.data != null) {
@@ -91,8 +97,8 @@ export default class Player extends Component {
         this.setState({
             blockScreen: true
         });
-        axios.get(localStorage.getItem("host")+"players/" + playerId)
-        // axios.get("http://localhost:8092/ui/players/" + playerId)
+        axios.get(localStorage.getItem("host") + "players/" + playerId)
+            // axios.get("http://localhost:8092/ui/players/" + playerId)
             .then(response => {
                 console.log(response);
                 if (response.data != null) {
@@ -170,10 +176,10 @@ export default class Player extends Component {
         }
         this.setState({blockScreen: true});
         // axios.post("http://localhost:8092/ui/player", data)
-        axios.post(localStorage.getItem("host")+"player", data)
+        axios.post(localStorage.getItem("host") + "player", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
-               // this.setState(this.initialState);
+                // this.setState(this.initialState);
                 this.setState({
                         id: '',
                         firstName: '',
@@ -205,7 +211,7 @@ export default class Player extends Component {
     updatePlayer = event => {
         event.preventDefault();
         let data = new FormData();
-       //   alert(this.state.isLegionary);
+        //   alert(this.state.isLegionary);
         data.append('teamId', this.state.teamId);
         data.append('id', this.state.id);
         data.append('file', this.state.photo);
@@ -226,8 +232,8 @@ export default class Player extends Component {
             console.log(pair[0] + ', ' + pair[1]);
         }
         this.setState({blockScreen: true});
-      //  axios.put("http://localhost:8092/ui/player", data)
-       axios.put(localStorage.getItem("host")+"player", data)
+        //  axios.put("http://localhost:8092/ui/player", data)
+        axios.put(localStorage.getItem("host") + "player", data)
             .then((res) => {
                 console.log("RESPONSE RECEIVED: ", res);
                 this.setState({
@@ -318,6 +324,71 @@ export default class Player extends Component {
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header><FontAwesomeIcon
                         icon={this.state.id ? faEdit : faPlusCircle}/> {this.state.id ? "Обновить данные игрока команды " + this.state.teamName : "Зарегистрировать игрока в команду " + this.state.teamName}
+                        <MDBContainer>
+                            <h3 style={{"display": "inline", "cursor": "pointer"}}
+                                onClick={this.searchPlayers.bind(this, "А")}><MDBBadge color="primary">А</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Б")}><MDBBadge
+                                color="primary">Б</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "В")}><MDBBadge
+                                color="primary">В</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Г")}><MDBBadge
+                                color="primary">Г</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Д")}><MDBBadge
+                                color="primary">Д</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Е")}><MDBBadge
+                                color="primary">Е</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Є")}><MDBBadge
+                                color="primary">Є</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Ж")}><MDBBadge
+                                color="primary">Ж</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "З")}><MDBBadge
+                                color="primary">З</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "И")}><MDBBadge
+                                color="primary">И</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "І")}><MDBBadge
+                                color="primary">І</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Ї")}><MDBBadge
+                                color="primary">Ї</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Й")}><MDBBadge
+                                color="primary">Й</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "К")}><MDBBadge
+                                color="primary">К</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Л")}><MDBBadge
+                                color="primary">Л</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "М")}><MDBBadge
+                                color="primary">М</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Н")}><MDBBadge
+                                color="primary">Н</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "О")}><MDBBadge
+                                color="primary">О</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "П")}><MDBBadge
+                                color="primary">П</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Р")}><MDBBadge
+                                color="primary">Р</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "С")}><MDBBadge
+                                color="primary">С</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Т")}><MDBBadge
+                                color="primary">Т</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "У")}><MDBBadge
+                                color="primary">У</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Ф")}><MDBBadge
+                                color="primary">Ф</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Х")}><MDBBadge
+                                color="primary">Х</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Ц")}><MDBBadge
+                                color="primary">Ц</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Ч")}><MDBBadge
+                                color="primary">Ч</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Ш")}><MDBBadge
+                                color="primary">Ш</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Щ")}><MDBBadge
+                                color="primary">Щ</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Ю")}><MDBBadge
+                                color="primary">Ю</MDBBadge></h3>
+                            <h3 style={{"display": "inline", "margin-left": "3px", "cursor": "pointer"}} onClick={this.searchPlayers.bind(this, "Я")}><MDBBadge
+                                color="primary">Я</MDBBadge></h3>
+                        </MDBContainer>
+                        <h2></h2>
                         <DropdownButton id="dropdown-basic-button" title=
                             {this.state.loadingUnregisteredPlayer ? "Идет загрузка" : "Не заявленные игроки"}>
                             {this.state.unRegisteredPlayers.map((player, count) => (
@@ -401,9 +472,9 @@ export default class Player extends Component {
                                     <Form.Control
                                         className={"bg-dark text-white"}
                                         type="checkbox"
-                                      //  defaultChecked={this.state.isLegionary}
-                                      //  value={isLegionary}
-                                     //   checked={isLegionary}
+                                        //  defaultChecked={this.state.isLegionary}
+                                        //  value={isLegionary}
+                                        //   checked={isLegionary}
                                         checked={this.state.isLegionary}
                                         onChange={this.checkBoxChange}
                                         autoComplete="off"
@@ -481,6 +552,4 @@ export default class Player extends Component {
 
         );
     }
-
-
 }
