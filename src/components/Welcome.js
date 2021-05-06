@@ -13,7 +13,7 @@ export default class Welcome extends Component {
             <Jumbotron className="bg-dark text-white">
                 <h1>Дергачівська районна федерація футболу</h1>
                 <p>
-                    Ресурс для адміністрування змагань сезону 2020
+                    Ресурс для адміністрування змагань сезону 2021
                 </p>
             </Jumbotron>
         );
